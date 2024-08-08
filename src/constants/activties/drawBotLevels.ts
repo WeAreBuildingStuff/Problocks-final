@@ -4,9 +4,9 @@ const drawBotGameLevels: DrawingBotCommands[][] = [
   // Level 2: Easy
   [
     { type: 'penDown' },
-    { type: 'forward', distance: 100 },
+    { type: 'forward', distance: 2 },
     { type: 'turnClockwise', degrees: 90 },
-    { type: 'forward', distance: 50 }
+    { type: 'forward', distance: 1 }
   ],
   // Level 3: Easy-medium
   [
