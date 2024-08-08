@@ -1,5 +1,8 @@
 import p5 from 'p5';
 
+const distanceModifier = 50;
+const commandDelay = 200; // 200ms delay
+
 export class DrawingBotGame {
   private p: p5;
   private commands: DrawingBotCommands[];
@@ -13,6 +16,7 @@ export class DrawingBotGame {
   private turnDegreesRemaining: number;
   private lines: { x1: number; y1: number; x2: number; y2: number }[] = [];
   private ghostLines: { x1: number; y1: number; x2: number; y2: number }[] = [];
+  private isAnimating: boolean;
 
   constructor(p: p5, commands: DrawingBotCommands[], ghostCommands: DrawingBotCommands[] = []) {
     this.p = p;
@@ -25,25 +29,30 @@ export class DrawingBotGame {
     this.currentCommandIndex = 0;
     this.distanceRemaining = 0;
     this.turnDegreesRemaining = 0;
+    this.isAnimating = false;
     this.calculateGhostPath();
   }
 
-  update() {
+  private delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private async processCommand() {
     if (this.currentCommandIndex < this.commands.length) {
       const currentCommand = this.commands[this.currentCommandIndex];
 
       switch (currentCommand.type) {
         case 'forward':
           if (this.distanceRemaining <= 0) {
-            this.distanceRemaining = currentCommand.distance;
+            this.distanceRemaining = currentCommand.distance * distanceModifier;
           }
           this.moveBot();
           break;
         case 'backward':
           if (this.distanceRemaining <= 0) {
-            this.distanceRemaining = currentCommand.distance;
+            this.distanceRemaining = currentCommand.distance * distanceModifier;
           }
-          this.moveBot(true)
+          this.moveBot(true);
           break;
         case 'turnCounterClockwise':
           if (this.turnDegreesRemaining <= 0) {
@@ -60,12 +69,22 @@ export class DrawingBotGame {
         case 'penUp':
           this.penDown = false;
           this.currentCommandIndex++;
+          await this.delay(commandDelay);
           break;
         case 'penDown':
           this.penDown = true;
           this.currentCommandIndex++;
+          await this.delay(commandDelay);
           break;
       }
+    }
+  }
+
+  async update() {
+    if (!this.isAnimating) {
+      this.isAnimating = true;
+      await this.processCommand();
+      this.isAnimating = false;
     }
   }
 
@@ -95,7 +114,7 @@ export class DrawingBotGame {
     this.p.push();
     this.p.translate(this.x, this.y);
     this.p.rotate(this.p.radians(this.angle));
-    
+
     this.p.noFill();
     this.p.stroke(0, 0, 0);
     this.p.ellipse(0, 0, 20, 20);
@@ -152,6 +171,7 @@ export class DrawingBotGame {
       this.turnDegreesRemaining -= Math.abs(step);
 
       if (this.turnDegreesRemaining <= 0) {
+        this.turnDegreesRemaining = 0;
         this.currentCommandIndex++;
       }
     }
@@ -168,7 +188,7 @@ export class DrawingBotGame {
       switch (command.type) {
         case 'forward':
         case 'backward': {
-          const distance = command.distance;
+          const distance = command.distance * distanceModifier;
           const direction = command.type === 'backward' ? -1 : 1;
           const dx = this.p.cos(this.p.radians(ghostAngle)) * distance * direction;
           const dy = this.p.sin(this.p.radians(ghostAngle)) * distance * direction;

@@ -1,5 +1,8 @@
 import p5 from 'p5';
 
+const distanceModifier = 50;
+const commandDelay = 200;
+
 export class CarAnimation {
   private p: p5;
   private commands: CarCommands[];
@@ -12,6 +15,7 @@ export class CarAnimation {
   private angleTurned: number;
   private path: { x1: number; y1: number; x2: number; y2: number }[] = [];
   private ghostPath: { x1: number; y1: number; x2: number; y2: number }[] = [];
+  private isAnimating: boolean;
 
   constructor(p: p5, commands: CarCommands[], ghostCommands: CarCommands[] = []) {
     this.p = p;
@@ -23,16 +27,21 @@ export class CarAnimation {
     this.currentCommandIndex = 0;
     this.distanceMoved = 0;
     this.angleTurned = 0;
+    this.isAnimating = false;
     this.calculateGhostPath();
   }
 
-  update() {
+  private delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private async processCommand() {
     if (this.currentCommandIndex < this.commands.length) {
       const currentCommand = this.commands[this.currentCommandIndex];
 
       switch (currentCommand.type) {
         case 'forward':
-          if (this.distanceMoved < currentCommand.distance) {
+          if (this.distanceMoved < currentCommand.distance * distanceModifier) {
             const nextX = this.x + this.p.cos(this.p.radians(this.angle));
             const nextY = this.y + this.p.sin(this.p.radians(this.angle));
             if (this.distanceMoved === 0) {
@@ -44,10 +53,12 @@ export class CarAnimation {
           } else {
             this.distanceMoved = 0;
             this.currentCommandIndex++;
+            await this.delay(commandDelay);
           }
           break;
+
         case 'backward':
-          if (this.distanceMoved < currentCommand.distance) {
+          if (this.distanceMoved < currentCommand.distance * distanceModifier) {
             const nextX = this.x - this.p.cos(this.p.radians(this.angle));
             const nextY = this.y - this.p.sin(this.p.radians(this.angle));
             if (this.distanceMoved === 0) {
@@ -59,8 +70,10 @@ export class CarAnimation {
           } else {
             this.distanceMoved = 0;
             this.currentCommandIndex++;
+            await this.delay(commandDelay);
           }
           break;
+
         case 'turnCounterClockwise':
           if (this.angleTurned < currentCommand.degrees) {
             this.angle -= 1;
@@ -68,8 +81,10 @@ export class CarAnimation {
           } else {
             this.angleTurned = 0;
             this.currentCommandIndex++;
+            await this.delay(commandDelay);
           }
           break;
+
         case 'turnClockwise':
           if (this.angleTurned < currentCommand.degrees) {
             this.angle += 1;
@@ -77,9 +92,20 @@ export class CarAnimation {
           } else {
             this.angleTurned = 0;
             this.currentCommandIndex++;
+            await this.delay(commandDelay);
           }
           break;
       }
+    } else {
+      this.isAnimating = false;
+    }
+  }
+
+  async update() {
+    if (!this.isAnimating) {
+      this.isAnimating = true;
+      await this.processCommand();
+      this.isAnimating = false;
     }
   }
 
@@ -97,7 +123,6 @@ export class CarAnimation {
       this.p.noStroke()
       this.p.ellipse(line.x2, line.y2, 5, 5)
     })
-    
     this.p.stroke(220, 220, 220);
     this.p.strokeWeight(1);
 
@@ -141,7 +166,7 @@ export class CarAnimation {
       switch (command.type) {
         case 'forward':
         case 'backward': {
-          const distance = command.distance;
+          const distance = command.distance * distanceModifier;
           const direction = command.type === 'backward' ? -1 : 1;
           const dx = this.p.cos(this.p.radians(ghostAngle)) * distance * direction;
           const dy = this.p.sin(this.p.radians(ghostAngle)) * distance * direction;
