@@ -5,7 +5,6 @@ import DrawingCanvas from '@/components/custom/drawingCanvas';
 import {
   ZoomInIcon,
   ZoomOutIcon,
-  SettingsIcon,
   RecordIcon,
   CircleStopIcon,
   PlayIcon
