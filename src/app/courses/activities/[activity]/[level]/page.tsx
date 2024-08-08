@@ -21,6 +21,7 @@ import parseDrawingBotCommands from '@/utils/parseDrawingBotCommands';
 import carGameLevels from '@/constants/activties/carLevels';
 import tileGameLevels from '@/constants/activties/tileConnectionLevels';
 import drawBotGameLevels from '@/constants/activties/drawBotLevels';
+import CamerPopUp from '@/components/custom/cameraPopUp';
 
 type GameType = 'car' | 'tile' | 'bot';
 
@@ -183,6 +184,7 @@ export default function Activity({ params }: ActivityProps) {
               controlCommand={controlCommand}
               todoCommands={todoCommands()}
             />
+            <CamerPopUp setCommands={setCommands}/>
           </div>
         </div>
       </div>
