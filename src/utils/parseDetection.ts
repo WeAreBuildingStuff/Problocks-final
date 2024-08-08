@@ -21,8 +21,8 @@ type SpecialCommand =
 type MarkerAction = Command | SpecialCommand;
 
 const MARKER_MAP: Record<number, MarkerAction> = {
-  0: { type: 'forward', distance: 50 },
-  1: { type: 'backward', distance: 50 },
+  0: { type: 'forward', distance: 100 },
+  1: { type: 'backward', distance: 100 },
   2: { type: 'turnClockwise', degrees: 90 },
   3: { type: 'turnCounterClockwise', degrees: 90 },
   4: { type: 'startRepeat' },

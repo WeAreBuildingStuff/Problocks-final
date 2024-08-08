@@ -13,6 +13,7 @@ import {
 } from '@/utils/getGeminiResponse';
 import parseCarCommands from '@/utils/parseCarCommands';
 import ESP32Controller from '@/components/custom/Esp32Controller';
+import CamerPopUp from '@/components/custom/cameraPopUp';
 
 interface ActivityProps {
   params: {
@@ -127,6 +128,7 @@ export default function Activity({ params }: ActivityProps) {
         <div className='flex-1 p-4'>
           <div className='h-full w-full bg-background rounded-xl shadow-xl'>
             <ESP32Controller commands={commands}/>
+            <CamerPopUp setCommands={setCommands as React.Dispatch<React.SetStateAction<CarCommands[] | TileCommands[] | DrawingBotCommands[]>>}/>
           </div>
         </div>
       </div>
