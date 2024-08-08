@@ -7,7 +7,8 @@ const ESP32Controller = () => {
   const [device, setDevice] = useState<BluetoothDevice | null>(null);
   const [characteristic, setCharacteristic] = useState<BluetoothRemoteGATTCharacteristic | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [duration, setDuration] = useState<number>(1000); // Default duration in ms
+  const [duration, setDuration] = useState<number>(1000);
+  const [commands, setCommands] = useState<string[]>([]);
 
   const connectBluetooth = async () => {
     try {
@@ -50,7 +51,16 @@ const ESP32Controller = () => {
     };
   }, [device]);
 
-  const handleCommand = (command: string) => () => sendCommand(command + duration);
+  const handleAddCommand = (command: string) => () => {
+    setCommands((prevCommands) => [...prevCommands, command + duration]);
+  };
+
+  const handlePlayCommands = async () => {
+    for (const command of commands) {
+      await sendCommand(command);
+      await new Promise((resolve) => setTimeout(resolve, duration));
+    }
+  };
 
   return (
     <div className="p-4 max-w-md mx-auto">
@@ -70,23 +80,38 @@ const ESP32Controller = () => {
       )}
 
       {device && (
-        <div className="grid grid-cols-2 gap-4">
-          <Button onClick={handleCommand('F')} className="w-full">Forward</Button>
-          <Button onClick={handleCommand('B')} className="w-full">Backward</Button>
-          <Button onClick={handleCommand('L')} className="w-full">Left</Button>
-          <Button onClick={handleCommand('R')} className="w-full">Right</Button>
-        </div>
-      )}
+        <>
+          <div className="grid grid-cols-2 gap-4">
+            <Button onClick={handleAddCommand('F')} className="w-full">Forward</Button>
+            <Button onClick={handleAddCommand('B')} className="w-full">Backward</Button>
+            <Button onClick={handleAddCommand('L')} className="w-full">Left</Button>
+            <Button onClick={handleAddCommand('R')} className="w-full">Right</Button>
+          </div>
 
-      <div className="mt-4">
-        <label className="block mb-2">Duration (ms):</label>
-        <input
-          type="number"
-          value={duration}
-          onChange={(e) => setDuration(Number(e.target.value))}
-          className="w-full p-2 border"
-        />
-      </div>
+          <div className="mt-4">
+            <label className="block mb-2">Duration (ms):</label>
+            <input
+              type="number"
+              value={duration}
+              onChange={(e) => setDuration(Number(e.target.value))}
+              className="w-full p-2 border"
+            />
+          </div>
+
+          <div className="mt-4">
+            <h2 className="text-xl font-bold mb-2">Command List</h2>
+            <ul className="list-disc pl-5">
+              {commands.map((command, index) => (
+                <li key={index}>{command}</li>
+              ))}
+            </ul>
+          </div>
+
+          <Button onClick={handlePlayCommands} className="w-full mt-4">
+            Play Commands
+          </Button>
+        </>
+      )}
     </div>
   );
 };
