@@ -22,9 +22,7 @@ interface ActivityProps {
 }
 
 export default function Activity({ params }: ActivityProps) {
-  const [commands, setCommands] = useState<CarCommands[] | TileCommands[] | DrawingBotCommands[]>(
-    []
-  );
+  const [commands, setCommands] = useState<CarCommands[]>([]);
   const [controlCommand, setControlCommand] = useState<ControlCommands>({ type: 'stop' });
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [transcript, setTranscript] = useState<string>('');
@@ -128,7 +126,7 @@ export default function Activity({ params }: ActivityProps) {
         </div>
         <div className='flex-1 p-4'>
           <div className='h-full w-full bg-background rounded-xl shadow-xl'>
-            <ESP32Controller />
+            <ESP32Controller commands={commands}/>
           </div>
         </div>
       </div>

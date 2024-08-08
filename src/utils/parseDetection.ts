@@ -27,7 +27,6 @@ const MARKER_MAP: Record<number, MarkerAction> = {
   3: { type: 'turnCounterClockwise', degrees: 90 },
   4: { type: 'startRepeat' },
   5: { type: 'endRepeat' },
-  // Add more commands or special actions here as needed
 };
 
 export default function parseDetections(detections: Array<Marker>): Command[] {

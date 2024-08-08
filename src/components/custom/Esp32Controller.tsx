@@ -3,12 +3,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-const ESP32Controller = () => {
+interface ESP32ControllerProps {
+  commands: CarCommands[];
+}
+
+const ESP32Controller: React.FC<ESP32ControllerProps> = ({ commands }) => {
   const [device, setDevice] = useState<BluetoothDevice | null>(null);
   const [characteristic, setCharacteristic] = useState<BluetoothRemoteGATTCharacteristic | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [duration, setDuration] = useState<number>(1000);
-  const [commands, setCommands] = useState<string[]>([]);
 
   const connectBluetooth = async () => {
     try {
@@ -51,14 +53,37 @@ const ESP32Controller = () => {
     };
   }, [device]);
 
-  const handleAddCommand = (command: string) => () => {
-    setCommands((prevCommands) => [...prevCommands, command + duration]);
+  const calculateDuration = (command: CarCommands) => {
+    if (command.type === 'forward' || command.type === 'backward') {
+      return command.distance * 10;
+    } else {
+      return command.degrees * 10;
+    }
   };
 
-  const handlePlayCommands = async () => {
+  const commandToString = (command: CarCommands) => {
+    const duration = calculateDuration(command);
+    switch (command.type) {
+      case 'forward':
+        return `F${duration}`;
+      case 'backward':
+        return `B${duration}`;
+      case 'turnClockwise':
+        return `R${duration}`;
+      case 'turnCounterClockwise':
+        return `L${duration}`;
+      default:
+        return '';
+    }
+  };
+
+  const handlePlayCommands = async (commands: CarCommands[]) => {
     for (const command of commands) {
-      await sendCommand(command);
-      await new Promise((resolve) => setTimeout(resolve, duration));
+      const commandStr = commandToString(command);
+      if (commandStr) {
+        await sendCommand(commandStr);
+        await new Promise((resolve) => setTimeout(resolve, calculateDuration(command)));
+      }
     }
   };
 
@@ -81,33 +106,16 @@ const ESP32Controller = () => {
 
       {device && (
         <>
-          <div className="grid grid-cols-2 gap-4">
-            <Button onClick={handleAddCommand('F')} className="w-full">Forward</Button>
-            <Button onClick={handleAddCommand('B')} className="w-full">Backward</Button>
-            <Button onClick={handleAddCommand('L')} className="w-full">Left</Button>
-            <Button onClick={handleAddCommand('R')} className="w-full">Right</Button>
-          </div>
-
-          <div className="mt-4">
-            <label className="block mb-2">Duration (ms):</label>
-            <input
-              type="number"
-              value={duration}
-              onChange={(e) => setDuration(Number(e.target.value))}
-              className="w-full p-2 border"
-            />
-          </div>
-
           <div className="mt-4">
             <h2 className="text-xl font-bold mb-2">Command List</h2>
             <ul className="list-disc pl-5">
               {commands.map((command, index) => (
-                <li key={index}>{command}</li>
+                <li key={index}>{`${command.type} ${command.type === 'forward' || command.type === 'backward' ? command.distance : command.degrees}`}</li>
               ))}
             </ul>
           </div>
 
-          <Button onClick={handlePlayCommands} className="w-full mt-4">
+          <Button onClick={() => handlePlayCommands(commands)} className="w-full mt-4">
             Play Commands
           </Button>
         </>
