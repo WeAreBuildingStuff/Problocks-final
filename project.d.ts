@@ -106,3 +106,39 @@ declare let webkitSpeechRecognition: {
   prototype: SpeechRecognition;
   new (): SpeechRecognition;
 };
+
+interface Navigator {
+  bluetooth: {
+    requestDevice(options: RequestDeviceOptions): Promise<BluetoothDevice>;
+  };
+}
+
+interface BluetoothDevice {
+  gatt?: BluetoothRemoteGATTServer;
+}
+
+interface BluetoothRemoteGATTServer {
+  connect(): Promise<BluetoothRemoteGATTServer>;
+  disconnect(): void;
+  getPrimaryService(serviceUUID: string): Promise<BluetoothRemoteGATTService>;
+}
+
+interface BluetoothRemoteGATTService {
+  getCharacteristic(characteristicUUID: string): Promise<BluetoothRemoteGATTCharacteristic>;
+}
+
+interface BluetoothRemoteGATTCharacteristic {
+  writeValue(value: BufferSource): Promise<void>;
+}
+
+interface RequestDeviceOptions {
+  filters?: Array<BluetoothLEScanFilter>;
+  optionalServices?: Array<string>;
+  acceptAllDevices?: boolean;
+}
+
+interface BluetoothLEScanFilter {
+  name?: string;
+  namePrefix?: string;
+  services?: Array<string>;
+}
