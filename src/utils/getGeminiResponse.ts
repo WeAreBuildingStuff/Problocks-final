@@ -1,6 +1,6 @@
 export async function getCarCommands(message: string): Promise<string> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/gemini/car-commands`, {
+    const response = await fetch(`/api/gemini/car-commands`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -22,7 +22,7 @@ export async function getCarCommands(message: string): Promise<string> {
 
 export async function getTileCommands(message: string): Promise<string> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/gemini/tile-commands`, {
+    const response = await fetch(`/api/gemini/tile-commands`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ export async function getTileCommands(message: string): Promise<string> {
 export async function getDrawBotCommands(message: string): Promise<string> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/gemini/draw-bot-commands`,
+      `/api/gemini/draw-bot-commands`,
       {
         method: 'POST',
         headers: {
