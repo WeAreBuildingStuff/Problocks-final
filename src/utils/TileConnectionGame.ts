@@ -7,6 +7,9 @@ export class TileConnectionGame {
   private animatedConnections: { start: string; end: string; progress: number }[];
   private ghostConnections: { start: string; end: string }[];
   private currentAnimationIndex: number;
+  private tileSize: number;
+  private rows: number = 10;
+  private cols: number = 10;
 
   constructor(p: p5, commands: TileCommands[], toDoCommands: TileCommands[]) {
     this.p = p;
@@ -16,6 +19,8 @@ export class TileConnectionGame {
     this.ghostConnections = [];
     this.currentAnimationIndex = 0;
     this.processCommands(toDoCommands);
+    this.tileSize = 40;
+
   }
 
   update() {
@@ -68,13 +73,10 @@ export class TileConnectionGame {
   }
 
   private drawGrid() {
-    const cols = 10;
-    const rows = 10;
-    const tileSize = 40;
     this.p.stroke(0);
-    for (let i = 0; i <= cols; i++) {
-      for (let j = 0; j <= rows; j++) {
-        this.p.rect(i * tileSize, j * tileSize, tileSize, tileSize);
+    for (let i = 0; i <= this.cols; i++) {
+      for (let j = 0; j <= this.rows; j++) {
+        this.p.rect(i * this.tileSize, j * this.tileSize, this.tileSize, this.tileSize);
       }
     }
   }
@@ -95,12 +97,25 @@ export class TileConnectionGame {
 
   private drawGhostConnections() {
     this.p.strokeWeight(2);
-    this.p.stroke(0, 0, 0, 50);
+    this.p.stroke(180, 180, 180);
     this.p.strokeWeight(2);
 
     for (const connection of this.ghostConnections) {
       this.drawLine(connection.start, connection.end, 1);
     }
+
+    for (const connection of this.ghostConnections) {
+      const [endCol, endRow] = connection.end.split('');
+      const endX = (endCol.charCodeAt(0) - 'A'.charCodeAt(0)) * this.tileSize + this.tileSize / 2;
+      const endY = (parseInt(endRow) - 1) * this.tileSize + this.tileSize / 2;
+  
+      this.p.fill(180, 180, 180);
+      this.p.noStroke();
+      this.p.ellipse(endX, endY, 5, 5);
+    }
+
+    this.p.fill(255, 255, 255);
+    this.p.stroke(255, 255, 255);
   }
 
   private drawLine(start: string, end: string, progress: number) {

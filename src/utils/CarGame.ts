@@ -87,10 +87,18 @@ export class CarAnimation {
     this.p.clear();
 
     this.p.strokeWeight(3);
-    this.p.stroke(0, 0, 0, 20);
+    this.p.stroke(220, 220, 220);
     this.ghostPath.forEach((line) => {
       this.p.line(line.x1, line.y1, line.x2, line.y2);
     });
+
+    this.ghostPath.forEach((line) => {
+      this.p.fill(120, 120, 120)
+      this.p.noStroke()
+      this.p.ellipse(line.x2, line.y2, 5, 5)
+    })
+    
+    this.p.stroke(220, 220, 220);
     this.p.strokeWeight(1);
 
     this.p.stroke(0);

@@ -78,6 +78,12 @@ export class DrawingBotGame {
       this.p.line(line.x1, line.y1, line.x2, line.y2);
     });
 
+    this.ghostLines.forEach((line) => {
+      this.p.fill(120, 120, 120)
+      this.p.noStroke()
+      this.p.ellipse(line.x2, line.y2, 5, 5)
+    })
+
     this.p.strokeWeight(5);
 
     this.p.stroke(0);
@@ -89,7 +95,9 @@ export class DrawingBotGame {
     this.p.push();
     this.p.translate(this.x, this.y);
     this.p.rotate(this.p.radians(this.angle));
-    this.p.fill(0, 0, 255);
+    
+    this.p.noFill();
+    this.p.stroke(0, 0, 0);
     this.p.ellipse(0, 0, 20, 20);
 
     this.p.fill(255, 0, 0);
