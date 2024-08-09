@@ -7,9 +7,10 @@ import ArucoDetector from './ArucoDetector';
 
 interface CamerProps {
   setCommands: React.Dispatch<React.SetStateAction<CarCommands[] | TileCommands[] | DrawingBotCommands[]>>
+  gameType: GameType
 }
 
-const CamerPopUp = ({setCommands} : CamerProps) => {
+const CamerPopUp = ({setCommands, gameType} : CamerProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCapture = () => {
@@ -29,7 +30,7 @@ const CamerPopUp = ({setCommands} : CamerProps) => {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[100vw] sm:max-h-[100vh] p-0">
           <div className="w-full h-screen bg-black flex flex-col items-center justify-center">
-            <ArucoDetector setCommands={setCommands}/>
+            <ArucoDetector setCommands={setCommands} gameType={gameType}/>
           </div>
         </DialogContent>
       </Dialog>

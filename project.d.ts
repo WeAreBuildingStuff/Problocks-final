@@ -142,3 +142,5 @@ interface BluetoothLEScanFilter {
   namePrefix?: string;
   services?: Array<string>;
 }
+
+type GameType = 'car' | 'tile' | 'bot';

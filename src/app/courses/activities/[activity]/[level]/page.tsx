@@ -22,8 +22,6 @@ import tileGameLevels from '@/constants/activties/tileConnectionLevels';
 import drawBotGameLevels from '@/constants/activties/drawBotLevels';
 import CamerPopUp from '@/components/custom/cameraPopUp';
 
-type GameType = 'car' | 'tile' | 'bot';
-
 interface ActivityProps {
   params: {
     level: string;
@@ -183,7 +181,7 @@ export default function Activity({ params }: ActivityProps) {
               controlCommand={controlCommand}
               todoCommands={todoCommands()}
             />
-            <CamerPopUp setCommands={setCommands}/>
+            <CamerPopUp setCommands={setCommands} gameType={gameType}/>
           </div>
         </div>
       </div>
