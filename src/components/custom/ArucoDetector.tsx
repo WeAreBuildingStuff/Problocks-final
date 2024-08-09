@@ -2,7 +2,9 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import AR from '@/lib/aruco';
 import consolidateDetections from '@/utils/consolidateDetections';
+import consolidateTileDetections from '@/utils/consolidateTileDectections';
 import parseDetections from '@/utils/parseDetection';
+import parseTileCommandsFromDectections from '@/utils/parseTileCommandsFromDetections';
 import { Button } from '../ui/button';
 
 interface Corner {
@@ -17,15 +19,15 @@ interface Marker {
 
 interface ArucoDetectorProps {
   setCommands: React.Dispatch<React.SetStateAction<CarCommands[] | TileCommands[] | DrawingBotCommands[]>>
+  gameType: GameType
 }
 
-const ArucoDetector = ({ setCommands }: ArucoDetectorProps) => {
+const ArucoDetector = ({ setCommands, gameType }: ArucoDetectorProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const detectorRef = useRef<AR.Detector | null>(null);
   const [pastDetections, setPastDetections] = useState<Marker[][]>([]);
-  const [consolidatedDetections, setConsolidatedDetections] = useState<Marker[]>([]);
 
   const startVideoStream = async () => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -121,13 +123,28 @@ const ArucoDetector = ({ setCommands }: ArucoDetectorProps) => {
 
   const consolidateAndLogDetections = () => {
     console.log(pastDetections);
-    const uniqueDetections = consolidateDetections(pastDetections, 20);
-    setConsolidatedDetections(uniqueDetections);
-    const commands = parseDetections(uniqueDetections);
+    
+    let uniqueDetections;
+  
+    if (gameType === 'tile') {
+      uniqueDetections = consolidateTileDetections(pastDetections, 20);
+    } else {
+      uniqueDetections = consolidateDetections(pastDetections, 20);
+    }
+
+    let commands
+
+    if (gameType === 'tile') {
+      commands = parseTileCommandsFromDectections(uniqueDetections);
+    } else {
+      commands = parseDetections(uniqueDetections);
+    }
+  
     console.log('Consolidated Detections:', uniqueDetections);
-    console.log(commands)
+    console.log(commands);
     setCommands(commands);
   };
+  
 
   useEffect(() => {
     const initialize = async () => {
