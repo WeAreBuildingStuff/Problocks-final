@@ -1,12 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 
-const ActivityCard: React.FC = () => {
+interface ActivityCardProps {
+  title: string;
+  description: string;
+}
+
+const ActivityCard: React.FC<ActivityCardProps> = ({title, description}) => {
   return (
     <div className='w-72 p-2 relative overflow-hidden rounded-lg shadow-md border-2 border-gray-300 group hover:shadow-lg hover:-translate-y-1 transition-transform duration-200 ease-in-out'>
-      <Link href='#' className='absolute inset-0 z-10' prefetch={false}>
-        <span className='sr-only'>View Level 1</span>
-      </Link>
       <Skeleton />
       {/* <img
         src="/placeholder.svg"
@@ -16,9 +18,9 @@ const ActivityCard: React.FC = () => {
         className="object-cover w-full h-48"
       /> */}
       <div className='p-4 bg-background'>
-        <h3 className='text-xl font-bold'>Level 1</h3>
+        <h3 className='text-xl font-bold'> {title} </h3>
         <p className='text-sm text-muted-foreground'>
-          Explore the enchanted forest and defeat the evil sorcerer.
+          {description}
         </p>
       </div>
     </div>
