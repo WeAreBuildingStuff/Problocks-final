@@ -12,7 +12,7 @@ type GameType = 'car' | 'tile' | 'bot';
 interface DrawingCanvasProps<T extends GameType> {
   gameType: T;
   commands: GameCommands[T];
-  todoCommands: GameCommands[T]; // Prop for ghost commands
+  todoCommands: GameCommands[T];
   controlCommand: ControlCommands;
 }
 
@@ -45,27 +45,31 @@ const DrawingCanvas = <T extends GameType>({
   const divRef = useRef<HTMLDivElement>(null);
 
   const memoizedCommands = useMemo(() => commands, [commands]);
-  const memoizedTodoCommands = useMemo(() => todoCommands, [todoCommands]); // Memoize todo commands
+  const memoizedTodoCommands = useMemo(() => todoCommands, [todoCommands])
   const memoizedControlCommand = useMemo(() => controlCommand, [controlCommand]);
 
   const sketch = (p: p5) => {
     let game: ReturnType<typeof createGame>;
+    let isGameInitialized = false;
 
     p.setup = () => {
       p.createCanvas(divRef.current?.clientWidth || 910, divRef.current?.clientHeight || 380);
       p.background(255);
-      game = createGame(p, gameType, memoizedCommands, memoizedTodoCommands); // Pass todo commands to createGame
+      game = createGame(p, gameType, memoizedCommands, memoizedTodoCommands);
+      isGameInitialized = true;
     };
 
     p.draw = () => {
-      p.clear();
-      if (memoizedControlCommand.type === 'start') {
-        game.update();
-      } else if (memoizedControlCommand.type === 'reset') {
-        game.resetAnimation();
-      }
+      if (isGameInitialized) {
+        p.clear();
+        if (memoizedControlCommand.type === 'start') {
+          game.update();
+        } else if (memoizedControlCommand.type === 'reset') {
+          game.resetAnimation();
+        }
 
-      game.display();
+        game.display();
+      }
     };
 
     p.windowResized = () => {

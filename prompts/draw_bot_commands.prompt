@@ -11,8 +11,8 @@ You are an AI that will translate the following request to a more simplified com
 
 here is the list of functions:
 
-forward(length) // move forward length spaces
-backward(length) // move forward length spaces
+forward(repetitions) // move forward repetitions times
+backward(repetitions) // move forward repetitions times
 turnClockwise(degrees : number) // turn certain degrees clockwise
 turnCounterClockwise(degrees : number) // turn certain degrees counter clockwise
 penDown() // penDown
