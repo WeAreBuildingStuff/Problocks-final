@@ -1,6 +1,8 @@
 import p5 from 'p5';
 
 export class TileConnectionGame {
+  private marginLeft: number = 30;
+  private marginTop: number = 30;
   private p: p5;
   private commands: (TileCommands | ControlCommands)[];
   private connections: { start: string; end: string }[];
@@ -30,9 +32,11 @@ export class TileConnectionGame {
   display() {
     this.p.background(255);
     this.drawGrid();
+    this.drawLabels();
     this.drawConnections();
     this.drawGhostConnections();
   }
+
 
   resetAnimation() {
     this.connections = [];
@@ -74,10 +78,41 @@ export class TileConnectionGame {
 
   private drawGrid() {
     this.p.stroke(0);
-    for (let i = 0; i <= this.cols; i++) {
-      for (let j = 0; j <= this.rows; j++) {
-        this.p.rect(i * this.tileSize, j * this.tileSize, this.tileSize, this.tileSize);
+    this.p.noFill();
+    for (let i = 0; i < this.cols; i++) {
+      for (let j = 0; j < this.rows; j++) {
+        this.p.rect(
+          this.marginLeft + i * this.tileSize,
+          this.marginTop + j * this.tileSize,
+          this.tileSize,
+          this.tileSize
+        );
       }
+    }
+  }
+
+  private drawLabels() {
+    this.p.textAlign(this.p.CENTER, this.p.CENTER);
+    this.p.textSize(12);
+    this.p.fill(0);
+    this.p.noStroke();
+
+    for (let i = 0; i < this.cols; i++) {
+      const label = String.fromCharCode('A'.charCodeAt(0) + i);
+      this.p.text(
+        label,
+        this.marginLeft + (i + 0.5) * this.tileSize,
+        this.marginTop / 2
+      );
+    }
+
+    for (let j = 0; j < this.rows; j++) {
+      const label = (j + 1).toString();
+      this.p.text(
+        label,
+        this.marginLeft / 2,
+        this.marginTop + (j + 0.5) * this.tileSize
+      );
     }
   }
 
@@ -98,7 +133,6 @@ export class TileConnectionGame {
   private drawGhostConnections() {
     this.p.strokeWeight(2);
     this.p.stroke(180, 180, 180);
-    this.p.strokeWeight(2);
 
     for (const connection of this.ghostConnections) {
       this.drawLine(connection.start, connection.end, 1);
@@ -106,8 +140,8 @@ export class TileConnectionGame {
 
     for (const connection of this.ghostConnections) {
       const [endCol, endRow] = connection.end.split('');
-      const endX = (endCol.charCodeAt(0) - 'A'.charCodeAt(0)) * this.tileSize + this.tileSize / 2;
-      const endY = (parseInt(endRow) - 1) * this.tileSize + this.tileSize / 2;
+      const endX = this.marginLeft + (endCol.charCodeAt(0) - 'A'.charCodeAt(0)) * this.tileSize + this.tileSize / 2;
+      const endY = this.marginTop + (parseInt(endRow) - 1) * this.tileSize + this.tileSize / 2;
   
       this.p.fill(180, 180, 180);
       this.p.noStroke();
@@ -119,13 +153,12 @@ export class TileConnectionGame {
   }
 
   private drawLine(start: string, end: string, progress: number) {
-    const tileSize = 40;
     const [startCol, startRow] = start.split('');
     const [endCol, endRow] = end.split('');
-    const startX = (startCol.charCodeAt(0) - 'A'.charCodeAt(0)) * tileSize + tileSize / 2;
-    const startY = (parseInt(startRow) - 1) * tileSize + tileSize / 2;
-    const endX = (endCol.charCodeAt(0) - 'A'.charCodeAt(0)) * tileSize + tileSize / 2;
-    const endY = (parseInt(endRow) - 1) * tileSize + tileSize / 2;
+    const startX = this.marginLeft + (startCol.charCodeAt(0) - 'A'.charCodeAt(0)) * this.tileSize + this.tileSize / 2;
+    const startY = this.marginTop + (parseInt(startRow) - 1) * this.tileSize + this.tileSize / 2;
+    const endX = this.marginLeft + (endCol.charCodeAt(0) - 'A'.charCodeAt(0)) * this.tileSize + this.tileSize / 2;
+    const endY = this.marginTop + (parseInt(endRow) - 1) * this.tileSize + this.tileSize / 2;
     const progressX = startX + (endX - startX) * progress;
     const progressY = startY + (endY - startY) * progress;
     this.p.line(startX, startY, progressX, progressY);
