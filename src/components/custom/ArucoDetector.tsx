@@ -127,7 +127,7 @@ const ArucoDetector = ({ setCommands, gameType }: ArucoDetectorProps) => {
     let uniqueDetections;
   
     if (gameType === 'tile') {
-      uniqueDetections = consolidateTileDetections(pastDetections, 20);
+      uniqueDetections = consolidateTileDetections(pastDetections, 30);
     } else {
       uniqueDetections = consolidateDetections(pastDetections, 20);
     }
