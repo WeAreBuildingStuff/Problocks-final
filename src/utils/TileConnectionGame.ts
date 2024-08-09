@@ -1,4 +1,4 @@
-import p5 from 'p5';
+import p5 from "p5";
 
 export class TileConnectionGame {
   private marginLeft: number = 30;
@@ -6,13 +6,16 @@ export class TileConnectionGame {
   private p: p5;
   private commands: (TileCommands | ControlCommands)[];
   private connections: { start: string; end: string }[];
-  private animatedConnections: { start: string; end: string; progress: number }[];
+  private animatedConnections: {
+    start: string;
+    end: string;
+    progress: number;
+  }[];
   private ghostConnections: { start: string; end: string }[];
   private currentAnimationIndex: number;
   private tileSize: number;
   private rows: number = 10;
   private cols: number = 10;
-
   constructor(p: p5, commands: TileCommands[], toDoCommands: TileCommands[]) {
     this.p = p;
     this.commands = commands;
@@ -23,6 +26,7 @@ export class TileConnectionGame {
     this.processCommands(toDoCommands);
     this.tileSize = 40;
 
+    this.resetAnimation();
   }
 
   update() {
@@ -33,45 +37,46 @@ export class TileConnectionGame {
     this.p.background(255);
     this.drawGrid();
     this.drawLabels();
-    this.drawConnections();
     this.drawGhostConnections();
+    this.drawConnections();
   }
-
 
   resetAnimation() {
     this.connections = [];
     this.animatedConnections = this.commands
-      .filter((command): command is TileCommands => command.type === 'connect')
+      .filter((command): command is TileCommands => command.type === "connect")
       .map((command) => ({
-        start: command.start,
-        end: command.end,
-        progress: 0
+        start: command.start.toUpperCase(),
+        end: command.end.toUpperCase(),
+        progress: 0,
       }));
     this.currentAnimationIndex = 0;
   }
 
   private processCommands(commands: (TileCommands | ControlCommands)[]) {
     this.ghostConnections = commands
-      .filter((command): command is TileCommands => command.type === 'connect')
+      .filter((command): command is TileCommands => command.type === "connect")
       .map((command) => ({
-        start: command.start,
-        end: command.end
+        start: command.start.toUpperCase(),
+        end: command.end.toUpperCase(),
       }));
   }
 
   private updateAnimation() {
+    console.log(this.currentAnimationIndex, this.animatedConnections.length);
     if (this.currentAnimationIndex < this.animatedConnections.length) {
-      const currentConnection = this.animatedConnections[this.currentAnimationIndex];
-      if (currentConnection.progress < 1) {
-        currentConnection.progress += 0.02;
-        if (currentConnection.progress > 1) {
-          currentConnection.progress = 1;
-          this.connections.push({
-            start: currentConnection.start,
-            end: currentConnection.end
-          });
-          this.currentAnimationIndex++;
-        }
+      const currentConnection =
+        this.animatedConnections[this.currentAnimationIndex];
+      currentConnection.progress += 0.02;
+
+      if (currentConnection.progress >= 1) {
+        currentConnection.progress = 1;
+
+        this.connections.push({
+          start: currentConnection.start,
+          end: currentConnection.end,
+        });
+        this.currentAnimationIndex++;
       }
     }
   }
@@ -98,7 +103,7 @@ export class TileConnectionGame {
     this.p.noStroke();
 
     for (let i = 0; i < this.cols; i++) {
-      const label = String.fromCharCode('A'.charCodeAt(0) + i);
+      const label = String.fromCharCode("A".charCodeAt(0) + i);
       this.p.text(
         label,
         this.marginLeft + (i + 0.5) * this.tileSize,
@@ -125,8 +130,13 @@ export class TileConnectionGame {
     }
 
     if (this.currentAnimationIndex < this.animatedConnections.length) {
-      const currentConnection = this.animatedConnections[this.currentAnimationIndex];
-      this.drawLine(currentConnection.start, currentConnection.end, currentConnection.progress);
+      const currentConnection =
+        this.animatedConnections[this.currentAnimationIndex];
+      this.drawLine(
+        currentConnection.start,
+        currentConnection.end,
+        currentConnection.progress
+      );
     }
   }
 
@@ -139,10 +149,16 @@ export class TileConnectionGame {
     }
 
     for (const connection of this.ghostConnections) {
-      const [endCol, endRow] = connection.end.split('');
-      const endX = this.marginLeft + (endCol.charCodeAt(0) - 'A'.charCodeAt(0)) * this.tileSize + this.tileSize / 2;
-      const endY = this.marginTop + (parseInt(endRow) - 1) * this.tileSize + this.tileSize / 2;
-  
+      const [endCol, endRow] = connection.end.split("");
+      const endX =
+        this.marginLeft +
+        (endCol.charCodeAt(0) - "A".charCodeAt(0)) * this.tileSize +
+        this.tileSize / 2;
+      const endY =
+        this.marginTop +
+        (parseInt(endRow) - 1) * this.tileSize +
+        this.tileSize / 2;
+
       this.p.fill(180, 180, 180);
       this.p.noStroke();
       this.p.ellipse(endX, endY, 5, 5);
@@ -153,12 +169,24 @@ export class TileConnectionGame {
   }
 
   private drawLine(start: string, end: string, progress: number) {
-    const [startCol, startRow] = start.split('');
-    const [endCol, endRow] = end.split('');
-    const startX = this.marginLeft + (startCol.charCodeAt(0) - 'A'.charCodeAt(0)) * this.tileSize + this.tileSize / 2;
-    const startY = this.marginTop + (parseInt(startRow) - 1) * this.tileSize + this.tileSize / 2;
-    const endX = this.marginLeft + (endCol.charCodeAt(0) - 'A'.charCodeAt(0)) * this.tileSize + this.tileSize / 2;
-    const endY = this.marginTop + (parseInt(endRow) - 1) * this.tileSize + this.tileSize / 2;
+    const [startCol, startRow] = start.toUpperCase().split("");
+    const [endCol, endRow] = end.toUpperCase().split("");
+    const startX =
+      this.marginLeft +
+      (startCol.charCodeAt(0) - "A".charCodeAt(0)) * this.tileSize +
+      this.tileSize / 2;
+    const startY =
+      this.marginTop +
+      (parseInt(startRow) - 1) * this.tileSize +
+      this.tileSize / 2;
+    const endX =
+      this.marginLeft +
+      (endCol.charCodeAt(0) - "A".charCodeAt(0)) * this.tileSize +
+      this.tileSize / 2;
+    const endY =
+      this.marginTop +
+      (parseInt(endRow) - 1) * this.tileSize +
+      this.tileSize / 2;
     const progressX = startX + (endX - startX) * progress;
     const progressY = startY + (endY - startY) * progress;
     this.p.line(startX, startY, progressX, progressY);

@@ -11,7 +11,7 @@ You are an AI that will translate the following request to a more simplified com
 
 here is the list of functions:
 
-connect(LetterNumber, LetterNumber ) // connect (tile1 to tile2), letters are columns, numbers are rows
+connect(LetterNumber, LetterNumber ) // connect (tile1 to tile2), letters are columns, numbers are rows, letters are capital
 
 please do not explain your answer, take a very good while to think and execute what is needed
 
