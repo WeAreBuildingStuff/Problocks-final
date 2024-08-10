@@ -17,8 +17,8 @@ type SpecialCommand =
 type MarkerAction = ViableCommand | SpecialCommand;
 
 const MARKER_MAP: Record<number, MarkerAction> = {
-  0: { type: 'forward', distance: 100 },
-  1: { type: 'backward', distance: 100 },
+  0: { type: 'forward', distance: 1 },
+  1: { type: 'backward', distance: 1 },
   2: { type: 'turnClockwise', degrees: 90 },
   3: { type: 'turnCounterClockwise', degrees: 90 },
   6: { type: 'penUp'},

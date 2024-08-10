@@ -2,18 +2,30 @@
 import { BentoGrid, BentoGridItem } from '@/components/ui/bento-grid';
 import React from 'react';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+
 export default function Page(): JSX.Element {
   const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
   return (
     <main className='w-screen flex flex-1 flex-col gap-5 h-full items-center bg-neutral-100 p-24'>
-      <div className='w-full max-w-screen-lg h-fit'>
-        <ReactPlayer
-          url='<https://www.youtube.com/watch?v=ItPcGiStRYA>'
-          controls
-          width='100%'
-        />
+      <div className='flex flex-col w-full max-w-screen-lg px-24 h-fit gap-4 items-center'>
+        <div className='w-full'>
+          <Image
+            src='problocks-logo-dark-text.svg'
+            alt='Descriptive Alt Text'
+            layout='responsive'
+            objectFit='cover'
+            width={1600}
+            height={900}
+            className='rounded-lg'
+          />
+        </div>
+        <p className='text-center text-3xl'>Making coding fun and accessible for kids.</p>
+        <Button className='bg-green-500 rounded-lg'>Go to Courses</Button>
       </div>
+
 
       <BentoGrid className='mx-auto w-full'>
         {items.map((item, i) => (
