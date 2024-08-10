@@ -3,11 +3,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import DrawingCanvas from "@/components/custom/drawingCanvas";
 import {
-  ZoomInIcon,
-  ZoomOutIcon,
   RecordIcon,
   CircleStopIcon,
   PlayIcon,
+  NextIcon,
+  PreviousIcon
 } from "@/components/custom/sub-components/Icons";
 import {
   getCarCommands,
@@ -21,6 +21,7 @@ import carGameLevels from "@/constants/activties/carLevels";
 import tileGameLevels from "@/constants/activties/tileConnectionLevels";
 import drawBotGameLevels from "@/constants/activties/drawBotLevels";
 import CamerPopUp from "@/components/custom/cameraPopUp";
+import { useRouter } from "next/navigation";
 
 interface ActivityProps {
   params: {
@@ -31,7 +32,6 @@ interface ActivityProps {
 }
 
 export default function Activity({ params }: ActivityProps) {
-  // Determine initial game type based on activity parameter
   const gameType: GameType = params.activity.startsWith("car")
     ? "car"
     : params.activity.startsWith("tile")
@@ -46,6 +46,7 @@ export default function Activity({ params }: ActivityProps) {
   });
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [transcript, setTranscript] = useState<string>("");
+  const router = useRouter();
 
   const recognitionRef = useRef<any>(null);
 
@@ -144,19 +145,94 @@ export default function Activity({ params }: ActivityProps) {
     }
   };
 
+  function handlePrevious() {
+    const chapter = parseInt(params.chapter, 10);
+    const level = parseInt(params.level, 10);
+  
+    let chapterLength: number;
+    let levelLength: number;
+  
+    switch (gameType) {
+      case "car":
+        chapterLength = carGameLevels.length;
+        levelLength = carGameLevels[chapter].length;
+        break;
+      case "tile":
+        chapterLength = tileGameLevels.length;
+        levelLength = tileGameLevels[chapter].length;
+        break;
+      case "bot":
+        chapterLength = drawBotGameLevels.length;
+        levelLength = drawBotGameLevels[chapter].length;
+        break;
+      default:
+        chapterLength = 0;
+        levelLength = 0;
+    }
+  
+    if (chapter === 0 && level === 0) {
+      return;
+    }
+  
+    if (level === 0) {
+      router.push(`/courses/activities/${params.activity}/${chapter - 1}/${levelLength - 1}`);
+    } else {
+      router.push(`/courses/activities/${params.activity}/${chapter}/${level - 1}`);
+    }
+  }
+  
+  function handleNext() {
+    const chapter = parseInt(params.chapter, 10);
+    const level = parseInt(params.level, 10);
+  
+    let chapterLength: number;
+    let levelLength: number;
+  
+    switch (gameType) {
+      case "car":
+        chapterLength = carGameLevels.length;
+        levelLength = carGameLevels[chapter].length;
+        break;
+      case "tile":
+        chapterLength = tileGameLevels.length;
+        levelLength = tileGameLevels[chapter].length;
+        break;
+      case "bot":
+        chapterLength = drawBotGameLevels.length;
+        levelLength = drawBotGameLevels[chapter].length;
+        break;
+      default:
+        chapterLength = 0;
+        levelLength = 0;
+    }
+  
+    if (chapter === chapterLength - 1 && level === levelLength - 1) {
+      return;
+    }
+  
+    if (level === levelLength - 1) {
+      if (chapter < chapterLength - 1) {
+        router.push(`/courses/activities/${params.activity}/${chapter + 1}/0`);
+      }
+    } else {
+      router.push(`/courses/activities/${params.activity}/${chapter}/${level + 1}`);
+    }
+  }
+  
+
   return (
     <div className="flex h-screen w-full text-black">
       <div className="flex-1 bg-white flex flex-col">
         <div className="bg-background border-b border-muted p-4">
           <div className="flex items-center justify-between">
             <div className="space-x-2">
-              <Button variant="ghost" onClick={handlePlay}>
+              <Button variant="ghost" onClick={handlePlay} className="gap-2">
                 <PlayIcon className="w-5 h-5" />
-                <span className="sr-only">Run</span>
+                <span className="">Run</span>
               </Button>
-              <Button variant="ghost" onClick={handleReset}>
+              <Button variant="ghost" onClick={handleReset} className="gap-2">
                 <CircleStopIcon className="w-5 h-5" />
-                <span className="sr-only">Stop</span>
+                <span className="">Reset</span>
               </Button>
               <Button
                 variant="ghost"
@@ -168,13 +244,13 @@ export default function Activity({ params }: ActivityProps) {
               </Button>
             </div>
             <div className="space-x-2">
-              <Button variant="ghost">
-                <ZoomInIcon className="w-5 h-5" />
-                <span className="sr-only">Zoom In</span>
+              <Button variant="ghost" onClick={handlePrevious}>
+                <PreviousIcon className="w-5 h-5" />
+                <span className="sr-only">Previous</span>
               </Button>
-              <Button variant="ghost">
-                <ZoomOutIcon className="w-5 h-5" />
-                <span className="sr-only">Zoom Out</span>
+              <Button variant="ghost" onClick={handleNext}>
+                <NextIcon className="w-5 h-5" />
+                <span className="sr-only">Next</span>
               </Button>
             </div>
           </div>
@@ -197,5 +273,6 @@ export default function Activity({ params }: ActivityProps) {
         </div>
       </div>
     </div>
+
   );
 }
