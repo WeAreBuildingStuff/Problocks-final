@@ -9,7 +9,7 @@ interface PageProps {
   };
 }
 
-export default function Page({params} : PageProps): JSX.Element {
+export default function Page({ params }: PageProps): JSX.Element {
   const activitySet = carActivitiesData.find((set) => set.id === params.id);
 
   if (!activitySet) {
@@ -30,7 +30,7 @@ export default function Page({params} : PageProps): JSX.Element {
                 <h3 className='text-xl font-bold'>Level 1: {activitySet.title}</h3>
                 <p className='text-sm text-muted-foreground'>
                   Begin your journey with a real robot car! Learn how to connect to your car,
-                  make it move, and navigate simple obstacles. Get ready for an exciting 
+                  make it move, and navigate simple obstacles. Get ready for an exciting
                   adventure in the physical world of robotics!
                 </p>
               </div>

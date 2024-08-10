@@ -62,7 +62,7 @@ const Page: React.FC = () => {
               title='Vroom Vroom Coding!'
               description='Drive your digital car with blocks of code!'
             />
-            <div className='bg-gray-100 py-6 rounded-lg mt-6 px-16'>
+            <div className='bg-gray-100 py-6 rounded-xl mt-4 px-16'>
               <Carousel className='w-full p-2'>
                 <CarouselContent className='-ml-1 gap-4'>
                   {carCourses.map((course, index) => (
