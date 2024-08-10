@@ -25,6 +25,7 @@ import CamerPopUp from "@/components/custom/cameraPopUp";
 interface ActivityProps {
   params: {
     level: string;
+    chapter: string;
     activity: string;
   };
 }
@@ -129,14 +130,15 @@ export default function Activity({ params }: ActivityProps) {
   };
 
   const todoCommands = () => {
+    const chapter = parseInt(params.chapter, 10);
     const level = parseInt(params.level, 10);
     switch (gameType) {
       case "car":
-        return carGameLevels[level];
+        return carGameLevels[chapter][level];
       case "tile":
-        return tileGameLevels[level];
+        return tileGameLevels[chapter][level];
       case "bot":
-        return drawBotGameLevels[level];
+        return drawBotGameLevels[chapter][level];
       default:
         return [];
     }
