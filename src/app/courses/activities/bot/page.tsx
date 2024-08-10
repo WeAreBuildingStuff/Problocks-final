@@ -128,7 +128,7 @@ export default function Activity({ params }: ActivityProps) {
         <div className='flex-1 p-4'>
           <div className='h-full w-full bg-background rounded-xl shadow-xl'>
             <ESP32Controller commands={commands}/>
-            <CamerPopUp setCommands={setCommands as React.Dispatch<React.SetStateAction<CarCommands[] | TileCommands[] | DrawingBotCommands[]>>}/>
+            <CamerPopUp setCommands={setCommands as React.Dispatch<React.SetStateAction<Command[]>>} gameType={"bot"}/>
           </div>
         </div>
       </div>
