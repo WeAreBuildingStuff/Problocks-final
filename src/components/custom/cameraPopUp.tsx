@@ -6,9 +6,7 @@ import { Camera } from "lucide-react";
 import ArucoDetector from "./ArucoDetector";
 
 interface CamerProps {
-  setCommands: React.Dispatch<
-    React.SetStateAction<CarCommands[] | TileCommands[] | DrawingBotCommands[]>
-  >;
+  setCommands: React.Dispatch<React.SetStateAction<Command[]>>;
   gameType: GameType;
 }
 

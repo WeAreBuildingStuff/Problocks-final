@@ -185,7 +185,12 @@ export default function Activity({ params }: ActivityProps) {
               controlCommand={controlCommand}
               todoCommands={todoCommands()}
             />
-            <CamerPopUp setCommands={setCommands} gameType={gameType} />
+            <CamerPopUp
+              setCommands={
+                setCommands as React.Dispatch<React.SetStateAction<Command[]>>
+              }
+              gameType={gameType}
+            />
           </div>
         </div>
       </div>
