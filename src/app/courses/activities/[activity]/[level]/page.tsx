@@ -1,26 +1,26 @@
-'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import DrawingCanvas from '@/components/custom/drawingCanvas';
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import DrawingCanvas from "@/components/custom/drawingCanvas";
 import {
   ZoomInIcon,
   ZoomOutIcon,
   RecordIcon,
   CircleStopIcon,
-  PlayIcon
-} from '@/components/custom/sub-components/Icons';
+  PlayIcon,
+} from "@/components/custom/sub-components/Icons";
 import {
   getCarCommands,
   getTileCommands,
-  getDrawBotCommands
-} from '@/utils/getGeminiResponse';
-import parseCarCommands from '@/utils/parseCarCommands';
-import parseTileCommands from '@/utils/parseTileCommands';
-import parseDrawingBotCommands from '@/utils/parseDrawingBotCommands';
-import carGameLevels from '@/constants/activties/carLevels';
-import tileGameLevels from '@/constants/activties/tileConnectionLevels';
-import drawBotGameLevels from '@/constants/activties/drawBotLevels';
-import CamerPopUp from '@/components/custom/cameraPopUp';
+  getDrawBotCommands,
+} from "@/utils/getGeminiResponse";
+import parseCarCommands from "@/utils/parseCarCommands";
+import parseTileCommands from "@/utils/parseTileCommands";
+import parseDrawingBotCommands from "@/utils/parseDrawingBotCommands";
+import carGameLevels from "@/constants/activties/carLevels";
+import tileGameLevels from "@/constants/activties/tileConnectionLevels";
+import drawBotGameLevels from "@/constants/activties/drawBotLevels";
+import CamerPopUp from "@/components/custom/cameraPopUp";
 
 interface ActivityProps {
   params: {
@@ -31,18 +31,20 @@ interface ActivityProps {
 
 export default function Activity({ params }: ActivityProps) {
   // Determine initial game type based on activity parameter
-  const gameType: GameType = params.activity.startsWith('car')
-    ? 'car'
-    : params.activity.startsWith('tile')
-      ? 'tile'
-      : 'bot';
+  const gameType: GameType = params.activity.startsWith("car")
+    ? "car"
+    : params.activity.startsWith("tile")
+      ? "tile"
+      : "bot";
 
-  const [commands, setCommands] = useState<CarCommands[] | TileCommands[] | DrawingBotCommands[]>(
-    []
-  );
-  const [controlCommand, setControlCommand] = useState<ControlCommands>({ type: 'stop' });
+  const [commands, setCommands] = useState<
+    CarCommands[] | TileCommands[] | DrawingBotCommands[]
+  >([]);
+  const [controlCommand, setControlCommand] = useState<ControlCommands>({
+    type: "stop",
+  });
   const [isRecording, setIsRecording] = useState<boolean>(false);
-  const [transcript, setTranscript] = useState<string>('');
+  const [transcript, setTranscript] = useState<string>("");
 
   const recognitionRef = useRef<any>(null);
 
@@ -53,11 +55,13 @@ export default function Activity({ params }: ActivityProps) {
     recognitionRef.current.interimResults = true;
 
     recognitionRef.current.onresult = (event: any) => {
-      const newTranscript = event.results[event.results.length - 1][0].transcript
+      const newTranscript = event.results[
+        event.results.length - 1
+      ][0].transcript
         .trim()
         .toLowerCase()
-        .replace(/[.]/g, '');
-      console.log('New transcript:', newTranscript);
+        .replace(/[.]/g, "");
+      console.log("New transcript:", newTranscript);
       setTranscript(newTranscript);
     };
 
@@ -84,19 +88,19 @@ export default function Activity({ params }: ActivityProps) {
     let parsedCommands: CarCommands[] | TileCommands[] | DrawingBotCommands[];
 
     switch (gameType) {
-      case 'car':
+      case "car":
         rawCommands = await getCarCommands(transcript);
         parsedCommands = parseCarCommands(rawCommands);
         setCommands(parsedCommands);
         console.log(parsedCommands);
         break;
-      case 'tile':
+      case "tile":
         rawCommands = await getTileCommands(transcript);
         parsedCommands = parseTileCommands(rawCommands);
         setCommands(parsedCommands);
         console.log(parsedCommands);
         break;
-      case 'bot':
+      case "bot":
         rawCommands = await getDrawBotCommands(transcript);
         parsedCommands = parseDrawingBotCommands(rawCommands);
         setCommands(parsedCommands);
@@ -117,21 +121,21 @@ export default function Activity({ params }: ActivityProps) {
   };
 
   const handlePlay = () => {
-    setControlCommand({ type: 'start' });
+    setControlCommand({ type: "start" });
   };
 
   const handleReset = () => {
-    setControlCommand({ type: 'reset' });
+    setControlCommand({ type: "reset" });
   };
 
   const todoCommands = () => {
     const level = parseInt(params.level, 10);
     switch (gameType) {
-      case 'car':
+      case "car":
         return carGameLevels[level];
-      case 'tile':
+      case "tile":
         return tileGameLevels[level];
-      case 'bot':
+      case "bot":
         return drawBotGameLevels[level];
       default:
         return [];
@@ -139,49 +143,54 @@ export default function Activity({ params }: ActivityProps) {
   };
 
   return (
-    <div className='flex h-screen w-full'>
-      <div className='flex-1 bg-muted/40 flex flex-col'>
-        <div className='bg-background border-b border-muted p-4'>
-          <div className='flex items-center justify-between'>
-            <div className='space-x-2'>
-              <Button variant='ghost' onClick={handlePlay}>
-                <PlayIcon className='w-5 h-5' />
-                <span className='sr-only'>Run</span>
+    <div className="flex h-screen w-full text-black">
+      <div className="flex-1 bg-white flex flex-col">
+        <div className="bg-background border-b border-muted p-4">
+          <div className="flex items-center justify-between">
+            <div className="space-x-2">
+              <Button variant="ghost" onClick={handlePlay}>
+                <PlayIcon className="w-5 h-5" />
+                <span className="sr-only">Run</span>
               </Button>
-              <Button variant='ghost' onClick={handleReset}>
-                <CircleStopIcon className='w-5 h-5' />
-                <span className='sr-only'>Stop</span>
+              <Button variant="ghost" onClick={handleReset}>
+                <CircleStopIcon className="w-5 h-5" />
+                <span className="sr-only">Stop</span>
               </Button>
               <Button
-                variant='ghost'
+                variant="ghost"
                 onClick={handleToggleRecording}
-                className={isRecording ? 'text-red-500 gap-2' : 'gap-2'}
+                className={isRecording ? "text-red-500 gap-2" : "gap-2"}
               >
-                <RecordIcon className='w-5 h-5' />
-                <span className=''>Record</span>
+                <RecordIcon className="w-5 h-5" />
+                <span className="">Record</span>
               </Button>
             </div>
-            <div className='space-x-2'>
-              <Button variant='ghost'>
-                <ZoomInIcon className='w-5 h-5' />
-                <span className='sr-only'>Zoom In</span>
+            <div className="space-x-2">
+              <Button variant="ghost">
+                <ZoomInIcon className="w-5 h-5" />
+                <span className="sr-only">Zoom In</span>
               </Button>
-              <Button variant='ghost'>
-                <ZoomOutIcon className='w-5 h-5' />
-                <span className='sr-only'>Zoom Out</span>
+              <Button variant="ghost">
+                <ZoomOutIcon className="w-5 h-5" />
+                <span className="sr-only">Zoom Out</span>
               </Button>
             </div>
           </div>
         </div>
-        <div className='flex-1 p-4'>
-          <div className='h-full w-full bg-background rounded-xl shadow-xl'>
+        <div className="flex-1 p-4">
+          <div className="h-full w-full bg-background rounded-xl shadow-xl">
             <DrawingCanvas<GameType>
               gameType={gameType}
               commands={commands}
               controlCommand={controlCommand}
               todoCommands={todoCommands()}
             />
-            <CamerPopUp setCommands={setCommands as React.Dispatch<React.SetStateAction<Command[]>>} gameType={gameType}/>
+            <CamerPopUp
+              setCommands={
+                setCommands as React.Dispatch<React.SetStateAction<Command[]>>
+              }
+              gameType={gameType}
+            />
           </div>
         </div>
       </div>

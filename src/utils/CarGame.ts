@@ -58,7 +58,10 @@ export class CarAnimation {
             this.distanceMoved++;
             const nextX = this.x + this.p.cos(this.p.radians(this.angle));
             const nextY = this.y + this.p.sin(this.p.radians(this.angle));
-            if (this.distanceMoved === currentCommand.distance * distanceModifier) {
+            if (
+              this.distanceMoved ===
+              currentCommand.distance * distanceModifier
+            ) {
               this.path.push({
                 x1: this.startX,
                 y1: this.startY,
@@ -66,7 +69,7 @@ export class CarAnimation {
                 y2: nextY,
               });
               this.startX = nextX;
-              this.startY = nextY
+              this.startY = nextY;
             }
             this.x = nextX;
             this.y = nextY;
@@ -82,7 +85,10 @@ export class CarAnimation {
             this.distanceMoved++;
             const nextX = this.x - this.p.cos(this.p.radians(this.angle));
             const nextY = this.y - this.p.sin(this.p.radians(this.angle));
-            if (this.distanceMoved === currentCommand.distance * distanceModifier) {
+            if (
+              this.distanceMoved ===
+              currentCommand.distance * distanceModifier
+            ) {
               this.path.push({
                 x1: this.startX,
                 y1: this.startY,
@@ -90,7 +96,7 @@ export class CarAnimation {
                 y2: nextY,
               });
               this.startX = nextX;
-              this.startY = nextY
+              this.startY = nextY;
             }
             this.x = nextX;
             this.y = nextY;
@@ -142,6 +148,7 @@ export class CarAnimation {
 
   display() {
     this.p.clear();
+    this.p.background(255);
 
     this.p.strokeWeight(3);
     this.p.stroke(220, 220, 220);
