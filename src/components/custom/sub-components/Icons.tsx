@@ -125,3 +125,41 @@ export function PlayIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement
     </svg>
   );
 }
+
+export function NextIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns='http://www.w3.org/2000/svg'
+      width='24'
+      height='24'
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='2'
+      strokeLinecap='round'
+      strokeLinejoin='round'
+    >
+      <polygon points='5 3 19 12 5 21 5 3' />
+    </svg>
+  );
+}
+
+export function PreviousIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns='http://www.w3.org/2000/svg'
+      width='24'
+      height='24'
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='2'
+      strokeLinecap='round'
+      strokeLinejoin='round'
+    >
+      <polygon points='19 3 5 12 19 21 19 3' />
+    </svg>
+  );
+}
