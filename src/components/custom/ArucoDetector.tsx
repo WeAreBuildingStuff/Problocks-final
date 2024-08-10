@@ -18,7 +18,7 @@ interface Marker {
 }
 
 interface ArucoDetectorProps {
-  setCommands: React.Dispatch<React.SetStateAction<CarCommands[] | TileCommands[] | DrawingBotCommands[]>>
+  setCommands: React.Dispatch<React.SetStateAction<Command[]>>
   gameType: GameType
 }
 
