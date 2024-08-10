@@ -1,7 +1,5 @@
 'use client';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-// import { useRouter, useParams } from 'next/navigation'
 import React from 'react';
 
 export default function Navbar() {
@@ -13,11 +11,13 @@ export default function Navbar() {
   }
 
   return (
-    <header className='flex justify-between w-screen h-18 gap-4 bg-white border border-b-1 py-4 px-24'>
-      <div className='flex gap-4 items-center'>
-        <Link href='/'>
-          <h3 className='font-bold text-xl mr-8'> ProBlocks </h3>
-        </Link>
+    <header className="bg-white border-b">
+      <div className="container mx-auto px-10 py-6 flex items-center justify-between">
+        <h1 className="text-xl text-black font-bold">Problocks</h1>
+        <nav className='mx-auto'>
+          <a href="#" className="mr-4 text-black font-medium">Home</a>
+          <a href="/brilliant/courses" className="text-gray-500">Courses</a>
+        </nav>
       </div>
     </header>
   );
