@@ -6,7 +6,11 @@ import p5 from 'p5';
 import { CarAnimation } from '@/utils/CarGame';
 import { TileConnectionGame } from '@/utils/TileConnectionGame';
 import { DrawingBotGame } from '@/utils/DrawingBotGame';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import FeedbackDialog from './feedbackDialogue';
+import reverseParseCarCommands from '@/utils/reverseParseCarCommands';
+import reverseParseTileCommands from '@/utils/reverseParseTileCommands';
+import reverseParseDrawingBotCommands from '@/utils/reverseParseDrawingBotCommands';
+import { getFeedback } from '@/utils/getGeminiResponse';
 
 type GameType = 'car' | 'tile' | 'bot';
 
@@ -76,12 +80,38 @@ const DrawingCanvas = <T extends GameType>({
 
         game.display();
         
-        if (game.isComplete && controlCommand.type !== 'stop') {
+        if (game.isComplete && controlCommand.type !== 'reset') {
           const result = game.check();
           
-          setResultMessage(result ? 'Congrats! You got it right!' : 'Oh no, that\'s wrong. Try again!');
-          setShowDialog(true);
-          setControlCommand({ type: "reset" });
+          if (result) {
+            setResultMessage('Congrats! You got it right!');
+          } else {
+            // Reverse parse commands
+            let feedbackMessage = '';
+            switch (gameType) {
+              case 'car':
+                feedbackMessage = `Expected: ${reverseParseCarCommands(todoCommands as CarCommands[])}. Given: ${reverseParseCarCommands(commands as CarCommands[])}`;
+                break;
+              case 'tile':
+                feedbackMessage = `Expected: ${reverseParseTileCommands(todoCommands as TileCommands[])}. Given: ${reverseParseTileCommands(commands as TileCommands[])}`;
+                break;
+              case 'bot':
+                feedbackMessage = `Expected: ${reverseParseDrawingBotCommands(todoCommands as DrawingBotCommands[])}. Given: ${reverseParseDrawingBotCommands(commands as DrawingBotCommands[])}`;
+                break;
+            }
+            
+            // Get feedback from API
+            getFeedback(feedbackMessage).then((feedback) => {
+              setResultMessage(`Oh no, that’s wrong. Try again! Feedback: ${feedback}`);
+              setShowDialog(true);
+              setControlCommand({ type: "reset" });
+            }).catch((error) => {
+              console.error('Error getting feedback:', error);
+              setResultMessage('Oh no, that’s wrong. Try again!');
+              setShowDialog(true);
+              setControlCommand({ type: "reset" });
+            });
+          }
         }
       }
     };
@@ -97,14 +127,11 @@ const DrawingCanvas = <T extends GameType>({
     <div ref={divRef} className='w-full h-full rounded-xl border-2'>
       <div ref={canvasRef}></div>
       
-      <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent>
-          <DialogTitle>Result</DialogTitle>
-          <DialogDescription>
-            {resultMessage}
-          </DialogDescription>
-        </DialogContent>
-      </Dialog>
+      <FeedbackDialog
+        open={showDialog}
+        onClose={() => setShowDialog(false)}
+        message={resultMessage}
+      />
     </div>
   );
 };

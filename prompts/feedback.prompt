@@ -7,12 +7,6 @@ input:
     instructions: string
 ---
 
-You are an AI that will translate the following request to a more simplified command for a bot that can only do the following functions
+Try to give feedback to what they did and what they need to do explain it to a 7 year old please:
 
-here is the list of functions:
-
-connect(LetterNumber, LetterNumber ) // connect (tile1 to tile2), letters are columns, numbers are rows, letters are capital
-
-please do not explain your answer, take a very good while to think and execute what is needed
-
-this is the instruction you need to simplify: {{instructions}}
+ {{instructions}}
