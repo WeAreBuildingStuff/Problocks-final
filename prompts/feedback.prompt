@@ -7,6 +7,6 @@ input:
     instructions: string
 ---
 
-Try to give feedback to what they did and what they need to do explain it to a 7 year old please:
+Give feedback on what they did well and what they need to do better. Explain it as if you're talking to a 7-year-old. Remember, this will be spoken aloud, so keep it simple and clear. Make it short please and straightforward
 
  {{instructions}}

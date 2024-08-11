@@ -26,7 +26,7 @@ const DynamicDrawingCanvas = dynamic(() => import('@/components/custom/drawingCa
 });
 
 export default function Component() {
-  const [gameType, setGameType] = useState<GameType>('car');
+  const [gameType, setGameType] = useState<GameType>('bot');
   const [commands, setCommands] = useState<CarCommands[] | TileCommands[] | DrawingBotCommands[]>(
     []
   );
@@ -132,8 +132,8 @@ export default function Component() {
 
   return (
     <div className='flex h-screen w-full'>
-      <div className='flex flex-col bg-background text-foreground border-r border-muted p-4 gap-4 max-w-[300px] w-full'>
-        {/* Sidebar content */}
+      {/* <div className='flex flex-col bg-background text-foreground border-r border-muted p-4 gap-4 max-w-[300px] w-full'>
+
         <div className='flex items-center justify-between'>
           <h2 className='text-lg font-semibold'>Coding Playground</h2>
           <Button variant='ghost' size='icon'>
@@ -142,7 +142,7 @@ export default function Component() {
           </Button>
         </div>
         <div className='flex flex-col space-y-4 overflow-auto hide-scrollbar'>
-          {/* Game type selection */}
+
           <div className='bg-gray-100 rounded-md p-4'>
             <h3 className='text-lg font-medium mb-2'>Game Type</h3>
             <select
@@ -156,7 +156,7 @@ export default function Component() {
             </select>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className='flex-1 bg-muted/40 flex flex-col'>
         <div className='bg-background border-b border-muted p-4'>
           <div className='flex items-center justify-between'>

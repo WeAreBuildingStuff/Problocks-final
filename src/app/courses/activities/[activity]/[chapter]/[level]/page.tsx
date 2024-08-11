@@ -267,7 +267,7 @@ export default function Activity({ params }: ActivityProps) {
               controlCommand={controlCommand}
               todoCommands={todoCommands()}
               setControlCommand={setControlCommand}
-              // onCheckResult={handleCheckResult}
+              handleNext={handleNext}
             />
             <CamerPopUp
               setCommands={
