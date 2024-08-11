@@ -197,7 +197,7 @@ export default function Component() {
               commands={commands}
               controlCommand={controlCommand}
               todoCommands={[]}
-              onCheckResult={handleCheckResult}
+              setControlCommand={setControlCommand}
             />
           </div>
         </div>

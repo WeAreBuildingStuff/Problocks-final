@@ -46,7 +46,7 @@ export default function Activity({ params }: ActivityProps) {
   });
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [transcript, setTranscript] = useState<string>("");
-  const [checkResult, setCheckResult] = useState<boolean | null>(null);
+  // const [checkResult, setCheckResult] = useState<boolean | null>(null);
   const router = useRouter();
 
   const recognitionRef = useRef<any>(null);
@@ -220,9 +220,9 @@ export default function Activity({ params }: ActivityProps) {
     }
   }
 
-  const handleCheckResult = (result: boolean) => {
-    setCheckResult(result);
-  };
+  // const handleCheckResult = (result: boolean) => {
+  //   setCheckResult(result);
+  // };
 
   return (
     <div className="flex h-screen w-full text-black">
@@ -266,7 +266,8 @@ export default function Activity({ params }: ActivityProps) {
               commands={commands}
               controlCommand={controlCommand}
               todoCommands={todoCommands()}
-              onCheckResult={handleCheckResult}
+              setControlCommand={setControlCommand}
+              // onCheckResult={handleCheckResult}
             />
             <CamerPopUp
               setCommands={
@@ -275,7 +276,7 @@ export default function Activity({ params }: ActivityProps) {
               gameType={gameType}
             />
           </div>
-          {checkResult !== null && (
+          {/* {checkResult !== null && (
             <div className="fixed bottom-4 right-4 bg-white border p-4 shadow-lg rounded-lg">
               {checkResult ? (
                 <span className="text-green-500 font-bold">Congrats! You got it right!</span>
@@ -283,7 +284,7 @@ export default function Activity({ params }: ActivityProps) {
                 <span className="text-red-500 font-bold">Oh no, that&apos;s wrong. Try again!</span>
               )}
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

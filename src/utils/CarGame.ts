@@ -147,7 +147,6 @@ export class CarAnimation {
   }
 
   display() {
-    this.p.clear();
     this.p.background(255);
 
     this.p.strokeWeight(3);
