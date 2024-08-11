@@ -17,7 +17,7 @@ export class CarAnimation {
   private path: { x1: number; y1: number; x2: number; y2: number }[] = [];
   private ghostPath: { x1: number; y1: number; x2: number; y2: number }[] = [];
   private isAnimating: boolean;
-  private isComplete: boolean;
+  isComplete: boolean;
   private checkedLines: boolean[] = [];
   private startX: number;
   private startY: number;

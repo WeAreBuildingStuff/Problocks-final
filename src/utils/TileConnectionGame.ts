@@ -16,6 +16,8 @@ export class TileConnectionGame {
   private tileSize: number;
   private rows: number = 10;
   private cols: number = 10;
+  isComplete: boolean
+
   constructor(p: p5, commands: TileCommands[], toDoCommands: TileCommands[]) {
     this.p = p;
     this.commands = commands;
@@ -25,7 +27,7 @@ export class TileConnectionGame {
     this.currentAnimationIndex = 0;
     this.processCommands(toDoCommands);
     this.tileSize = 40;
-
+    this.isComplete = false;
     this.resetAnimation();
   }
 
@@ -190,5 +192,9 @@ export class TileConnectionGame {
     const progressX = startX + (endX - startX) * progress;
     const progressY = startY + (endY - startY) * progress;
     this.p.line(startX, startY, progressX, progressY);
+  }
+
+  check() : boolean {
+    return true
   }
 }

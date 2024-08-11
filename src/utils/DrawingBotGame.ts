@@ -20,7 +20,7 @@ export class DrawingBotGame {
   private lines: { x1: number; y1: number; x2: number; y2: number }[] = [];
   private ghostLines: { x1: number; y1: number; x2: number; y2: number }[] = [];
   private isAnimating: boolean;
-  private isComplete: boolean;
+  isComplete: boolean;
   private checkedLines: boolean[] = [];
   private linesDrawn: { x1: number; y1: number; x2: number; y2: number }[] = [];
 

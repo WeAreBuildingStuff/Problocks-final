@@ -64,6 +64,7 @@ export default function Component() {
   const [controlCommand, setControlCommand] = useState<ControlCommands>({ type: 'stop' });
   const [isListening, setIsListening] = useState<boolean>(false);
   const [transcript, setTranscript] = useState<string>('');
+  const [checkResult, setCheckResult] = useState<boolean | null>(null);
 
   const recognitionRef = useRef<any>(null);
 
@@ -152,6 +153,10 @@ export default function Component() {
 
   const handleReset = () => {
     setControlCommand({ type: 'reset' });
+  };
+
+  const handleCheckResult = (result: boolean) => {
+    setCheckResult(result);
   };
 
   // Determine TODO commands based on game type
@@ -252,6 +257,7 @@ export default function Component() {
               commands={commands}
               controlCommand={controlCommand}
               todoCommands={todoCommands()}
+              onCheckResult={handleCheckResult}
             />
           </div>
         </div>
