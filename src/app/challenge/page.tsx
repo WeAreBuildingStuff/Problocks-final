@@ -3,12 +3,9 @@ import dynamic from 'next/dynamic';
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
-  ZoomInIcon,
-  ZoomOutIcon,
-  SettingsIcon,
   RecordIcon,
   CircleStopIcon,
-  PlayIcon
+  PlayIcon,
 } from '@/components/custom/sub-components/Icons';
 import {
   getCarCommands,
@@ -18,6 +15,7 @@ import {
 import parseCarCommands from '@/utils/parseCarCommands';
 import parseTileCommands from '@/utils/parseTileCommands';
 import parseDrawingBotCommands from '@/utils/parseDrawingBotCommands';
+import { getRandomChallenge } from '@/utils/getGeminiResponse';
 
 type GameType = 'car' | 'tile' | 'bot';
 
@@ -27,14 +25,13 @@ const DynamicDrawingCanvas = dynamic(() => import('@/components/custom/drawingCa
 
 export default function Component() {
   const [gameType, setGameType] = useState<GameType>('car');
-  const [commands, setCommands] = useState<CarCommands[] | TileCommands[] | DrawingBotCommands[]>(
-    []
-  );
+  const [commands, setCommands] = useState<CarCommands[] | TileCommands[] | DrawingBotCommands[]>([]);
   const [controlCommand, setControlCommand] = useState<ControlCommands>({ type: 'stop' });
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [transcript, setTranscript] = useState<string>('');
-
+  const [challenge, setChallenge] = useState<CarCommands[] | TileCommands[] | DrawingBotCommands[]>([]);
   const [checkResult, setCheckResult] = useState<boolean | null>(null);
+  const [difficulty, setDifficulty] = useState<string>('');
 
   const recognitionRef = useRef<any>(null);
 
@@ -73,13 +70,39 @@ export default function Component() {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-      }
-    };
-  }, []);
+  async function generateChallenge() {
+    const gameTypes: GameType[] = ['car', 'tile', 'bot'];
+    const difficulties: string[] = ['simple', 'moderate', 'complex', "very complex"];
+
+    const randomGameType = gameTypes[Math.floor(Math.random() * gameTypes.length)];
+    const randomDifficulty = difficulties[Math.floor(Math.random() * difficulties.length)];
+    setGameType(randomGameType);
+
+    const challengeInstruction = `${randomDifficulty}, ${randomGameType}`;
+    const challengeResponse = await getRandomChallenge(challengeInstruction);
+
+    console.log(`Generated Challenge: ${challengeResponse}`);
+
+
+    let parsedCommands: CarCommands[] | TileCommands[] | DrawingBotCommands[];
+
+    switch (randomGameType) {
+      case 'car':
+        parsedCommands = parseCarCommands(challengeResponse);
+        setChallenge(parsedCommands);
+        break;
+      case 'tile':
+        parsedCommands = parseTileCommands(challengeResponse);
+        setChallenge(parsedCommands);
+        break;
+      case 'bot':
+        parsedCommands = parseDrawingBotCommands(challengeResponse);
+        setChallenge(parsedCommands);
+        break;
+      default:
+        throw new Error(`Unsupported game type: ${randomGameType}`);
+    }
+  }
 
   async function generateCommands() {
     let rawCommands: string;
@@ -130,76 +153,54 @@ export default function Component() {
     }
   };
 
+  useEffect(() => {
+    generateChallenge();
+  }, []);
+
   return (
-    <div className='flex h-screen w-full'>
-      <div className='flex flex-col bg-background text-foreground border-r border-muted p-4 gap-4 max-w-[300px] w-full'>
-        {/* Sidebar content */}
-        <div className='flex items-center justify-between'>
-          <h2 className='text-lg font-semibold'>Coding Playground</h2>
-          <Button variant='ghost' size='icon'>
-            <SettingsIcon className='w-5 h-5' />
-            <span className='sr-only'>Settings</span>
-          </Button>
-        </div>
-        <div className='flex flex-col space-y-4 overflow-auto hide-scrollbar'>
-          {/* Game type selection */}
-          <div className='bg-gray-100 rounded-md p-4'>
-            <h3 className='text-lg font-medium mb-2'>Game Type</h3>
-            <select
-              value={gameType}
-              onChange={(e) => setGameType(e.target.value as GameType)}
-              className='w-full p-2 border rounded'
-            >
-              <option value='car'>Car Game</option>
-              <option value='tile'>Tile Connection Game</option>
-              <option value='bot'>Drawing Bot Game</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div className='flex-1 bg-muted/40 flex flex-col'>
-        <div className='bg-background border-b border-muted p-4'>
+    <div className={`flex h-screen w-screen bg-white text-gray-900`}>
+      <div className='flex-1 flex flex-col'>
+        <header className={`bg-gray-100 p-4 text-center`}>
+          <h1 className='text-3xl font-bold mb-2'>Challenges!</h1>
+        </header>
+        
+        <div className={`bg-gray-100 border-b border-gray-300 p-4`}>
           <div className='flex items-center justify-between'>
-            <div className='space-x-2'>
-              <Button variant='ghost' onClick={handlePlay}>
-                <PlayIcon className='w-5 h-5' />
-                <span className='sr-only'>Run</span>
+            <div className='space-x-4'>
+              <Button variant='default' size='lg' onClick={handlePlay}>
+                <PlayIcon className='w-6 h-6 mr-2' />
+                Run
               </Button>
-              <Button variant='ghost' onClick={handleReset}>
-                <CircleStopIcon className='w-5 h-5' />
-                <span className='sr-only'>Stop</span>
+              <Button variant='secondary' size='lg' onClick={handleReset}>
+                <CircleStopIcon className='w-6 h-6 mr-2' />
+                Reset
               </Button>
               <Button
-                variant='ghost'
+                variant={isRecording ? 'destructive' : 'outline'}
+                size='lg'
                 onClick={handleToggleRecording}
-                className={isRecording ? 'text-red-500 gap-2' : 'gap-2'}
+                className='gap-2'
               >
-                <RecordIcon className='w-5 h-5' />
-                <span className=''>Record</span>
-              </Button>
-            </div>
-            <div className='space-x-2'>
-              <Button variant='ghost'>
-                <ZoomInIcon className='w-5 h-5' />
-                <span className='sr-only'>Zoom In</span>
-              </Button>
-              <Button variant='ghost'>
-                <ZoomOutIcon className='w-5 h-5' />
-                <span className='sr-only'>Zoom Out</span>
+                <RecordIcon className='w-6 h-6' />
+                {isRecording ? 'Stop Recording' : 'Start Recording'}
               </Button>
             </div>
           </div>
         </div>
-        <div className='flex-1 p-4'>
-          <div className='h-full w-full bg-background rounded-xl shadow-xl'>
-            <DynamicDrawingCanvas
-              gameType={gameType}
-              commands={commands}
-              controlCommand={controlCommand}
-              todoCommands={[]}
-              onCheckResult={handleCheckResult}
-            />
+        
+        <div className='flex-1 p-4 flex max-w-screen'>
+          <div className='flex-1'>
+            <div className={`h-[1080px] w-full bg-gray-100 rounded-xl shadow-xl`}>
+              <DynamicDrawingCanvas
+                gameType={gameType}
+                commands={commands}
+                controlCommand={controlCommand}
+                todoCommands={challenge}
+                onCheckResult={handleCheckResult}
+              />
+            </div>
           </div>
+        
         </div>
       </div>
     </div>

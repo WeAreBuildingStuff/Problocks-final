@@ -115,8 +115,6 @@ export class DrawingBotGame {
 
     this.ghostLines.forEach((line) => {
       this.p.fill(120, 120, 120);
-      this.p.noStroke();
-      this.p.ellipse(line.x2, line.y2, 5, 5);
     });
 
     this.p.strokeWeight(5);
