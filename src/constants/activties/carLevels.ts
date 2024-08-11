@@ -1,8 +1,7 @@
 const carGameLevels: CarCommands[][][] = [
-  // Forwards and backwards
   [
-    [{ type: "forward", distance: 2 }],
-    [{ type: "backward", distance: 3 }],
+    [{ type: "forward", distance: 1 }],
+    [{ type: "backward", distance: 1 }],
     [
       { type: "forward", distance: 2 },
       { type: "backward", distance: 1 },

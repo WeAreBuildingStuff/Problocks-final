@@ -15,11 +15,10 @@ here is the list of commands you can use to create according to the game they ch
 connect(LetterNumber, LetterNumber ) // connect (tile1 to tile2), letters are columns, numbers are rows, letters are capital, numbers can only go up to 10, letters up to J
 
 # Car
-forward(repetitions) // move forward repetitions times (distance is 2 max)
-backward(repetitions) // move forward repetitions times (distance is 2 max)
+forward(repetitions) // move forward repetitions times (distance is 3 max)
+backward(repetitions) // move forward repetitions times (distance is 3 max)
 turnClockwise(degrees : number) // turn certain degrees clockwise (please only use 90 degrees)
 turnCounterClockwise(degrees : number) // turn certain degrees counter clockwise (please only use 90 degrees)
-// take note map is only 7 tall, and 10 wide, so make sure not to make it too big
 
 # Drawing Bot
 forward(repetitions) // move forward repetitions times (distance is 3 max)
@@ -28,8 +27,7 @@ turnClockwise(degrees : number) // turn certain degrees clockwise (please only u
 turnCounterClockwise(degrees : number) // turn certain degrees counter clockwise (please only use 90 degrees)
 penDown() // penDown
 penUp() // penUp
-// take note map is only 7 tall, and 10 wide, so make sure not to make it too big
 
-please do not explain your answer, take a very good while to think and execute what is needed, be creative, dont just make a box, and dont be too harsh
+please do not explain your answer, take a very good while to think and execute what is needed, be creative, dont just make a box
 
-This is the level of difficulty and game they chose: {{instructions}}
+make sure that the level of difficulty is similar to: {{instructions}}

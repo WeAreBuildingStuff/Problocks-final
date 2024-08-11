@@ -113,16 +113,6 @@ export default function Activity({ params }: ActivityProps) {
                 <span className=''>Record</span>
               </Button>
             </div>
-            <div className='space-x-2'>
-              <Button variant='ghost'>
-                <ZoomInIcon className='w-5 h-5' />
-                <span className='sr-only'>Zoom In</span>
-              </Button>
-              <Button variant='ghost'>
-                <ZoomOutIcon className='w-5 h-5' />
-                <span className='sr-only'>Zoom Out</span>
-              </Button>
-            </div>
           </div>
         </div>
         <div className='flex-1 p-4'>
