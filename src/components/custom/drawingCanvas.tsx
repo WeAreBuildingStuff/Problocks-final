@@ -14,6 +14,7 @@ interface DrawingCanvasProps<T extends GameType> {
   commands: GameCommands[T];
   todoCommands: GameCommands[T];
   controlCommand: ControlCommands;
+  onCheckResult: (result: boolean) => void;
 }
 
 function createGame(
@@ -40,7 +41,8 @@ const DrawingCanvas = <T extends GameType>({
   gameType,
   commands,
   todoCommands,
-  controlCommand
+  controlCommand,
+  onCheckResult
 }: DrawingCanvasProps<T>) => {
   const divRef = useRef<HTMLDivElement>(null);
 
@@ -69,6 +71,11 @@ const DrawingCanvas = <T extends GameType>({
         }
 
         game.display();
+        
+        if (game.isComplete) {
+          const result = game.check();
+          onCheckResult(result); 
+        }
       }
     };
 
