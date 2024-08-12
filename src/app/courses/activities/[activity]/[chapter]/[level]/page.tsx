@@ -220,10 +220,6 @@ export default function Activity({ params }: ActivityProps) {
     }
   }
 
-  // const handleCheckResult = (result: boolean) => {
-  //   setCheckResult(result);
-  // };
-
   return (
     <div className="flex h-screen w-full text-black">
       <div className="flex-1 bg-white flex flex-col">

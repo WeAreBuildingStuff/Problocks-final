@@ -1,7 +1,7 @@
 'use client';
-import Link from "next/link"
-import Image from "next/image"
-import { MonitorIcon, MicIcon, RobotIcon } from "@/components/custom/sub-components/Icons";
+import Link from "next/link";
+import Image from "next/image";
+import { ForwardAndBackwardIcon, PenMovementIcon, SingleConnectionsIcon } from "@/components/custom/sub-components/coursesIcons";
 
 export default function Component() {
   return (
@@ -18,18 +18,11 @@ export default function Component() {
               </p>
               <div className="flex gap-4">
                 <Link
-                  href="#"
+                  href="/courses"
                   className="inline-flex h-10 items-center justify-center rounded-md bg-white px-8 text-sm font-medium text-green-600 shadow transition-colors hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                   prefetch={false}
                 >
                   Get Started
-                </Link>
-                <Link
-                  href="#"
-                  className="inline-flex h-10 items-center justify-center rounded-md border border-white bg-transparent px-8 text-sm font-medium text-white shadow-sm transition-colors hover:bg-white hover:text-green-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                  prefetch={false}
-                >
-                  Learn More
                 </Link>
               </div>
             </div>
@@ -43,57 +36,51 @@ export default function Component() {
           </div>
         </section>
         <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6 space-y-12">
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                Explore Our Learning Adventures
-              </h2>
-              <p className="max-w-[700px] mx-auto text-muted-foreground md:text-xl">
-                Discover exciting ways to learn coding with ProBlocks&apos; innovative approach.
-              </p>
-            </div>
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              <a href="/magic-voice-quests" className="block bg-muted rounded-lg p-6 space-y-4 hover:bg-muted-hover">
-                <div className="bg-green-500 rounded-full w-12 h-12 flex items-center justify-center">
-                  <MicIcon className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-bold">Magic Voice Quests</h3>
-                <p className="text-muted-foreground">
-                  Use your voice to command and control the digital world. Solve puzzles and create interactive stories using voice commands.
-                </p>
-              </a>
-              <a href="/robot-block-quests" className="block bg-muted rounded-lg p-6 space-y-4 hover:bg-muted-hover">
-                <div className="bg-green-500 rounded-full w-12 h-12 flex items-center justify-center">
-                  <RobotIcon className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-bold">Robot Block Quests</h3>
-                <p className="text-muted-foreground">
-                  Program a robot using paper blocks. Control a drawing robot, navigate obstacle courses, and perform creative tasks.
-                </p>
-              </a>
-              <a href="/virtual-robot-quests" className="block bg-muted rounded-lg p-6 space-y-4 hover:bg-muted-hover">
-                <div className="bg-green-500 rounded-full w-12 h-12 flex items-center justify-center">
-                  <MonitorIcon className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-bold">Virtual Robot Quests</h3>
-                <p className="text-muted-foreground">
-                  Utilize paper blocks to program a virtual robot in a digital environment. Draw shapes, solve mazes, and complete interactive simulations.
-                </p>
-              </a>
-            </div>
-          </div>
-        </section>
+  <div className="container px-4 md:px-6 space-y-12">
+    <div className="text-center space-y-4">
+      <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+        Explore Our Learning Adventures
+      </h2>
+      <p className="max-w-[700px] mx-auto text-muted-foreground md:text-xl">
+        Discover exciting ways to learn coding with ProBlocks&apos; innovative approach.
+      </p>
+    </div>
+    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <a href="/courses/activities/car/0/0" className="block bg-muted rounded-lg p-6 space-y-4 hover:bg-muted-hover">
+        <div className="bg-green-500 rounded-full w-12 h-12 flex items-center justify-center">
+          <ForwardAndBackwardIcon className="h-6 w-6 text-white" />
+        </div>
+        <h3 className="text-xl font-bold">Car Code Challenges</h3>
+        <p className="text-muted-foreground">
+          Master the road by coding your car’s every move! From basic drives to complex routes, enhance your programming skills with fun driving challenges.
+        </p>
+      </a>
+      <a href="/courses/activities/draw/0/0" className="block bg-muted rounded-lg p-6 space-y-4 hover:bg-muted-hover">
+        <div className="bg-green-500 rounded-full w-12 h-12 flex items-center justify-center">
+          <PenMovementIcon className="h-6 w-6 text-white" />
+        </div>
+        <h3 className="text-xl font-bold">Drawing Bot Adventures</h3>
+        <p className="text-muted-foreground">
+          Guide your digital pen to create amazing drawings! Explore a range of drawing challenges from simple shapes to very complex patterns.
+        </p>
+      </a>
+      <a href="/courses/activities/tile/0/0" className="block bg-muted rounded-lg p-6 space-y-4 hover:bg-muted-hover">
+        <div className="bg-green-500 rounded-full w-12 h-12 flex items-center justify-center">
+          <SingleConnectionsIcon className="h-6 w-6 text-white" />
+        </div>
+        <h3 className="text-xl font-bold">Tile Tastic Challenges</h3>
+        <p className="text-muted-foreground">
+          Build and design with tile-based coding! Develop your skills through challenges involving single connections, complex shapes, and intricate patterns.
+        </p>
+      </a>
+    </div>
+  </div>
+</section>
 
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-green-500 to-green-600">
-          <div className="container px-4 md:px-6 grid gap-8 md:grid-cols-2 items-center">
-            <Image
-              src="/placeholder.svg"
-              width={400}
-              height={400}
-              alt="Coding Kids"
-              className="mx-auto"
-            />
-            <div className="space-y-4 text-white">
+
+        <section className="w-full py-12 px-8 md:px-12 md:py-24 lg:py-32 bg-gradient-to-br from-green-500 to-green-600">
+          <div className="container px-4 md:px-6 flex flex-col md:flex-row gap-8 items-start">
+            <div className="space-y-4 text-white lg:w-1/2 md:ml-auto">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                 Why Choose ProBlocks?
               </h2>
@@ -136,5 +123,5 @@ export default function Component() {
         </nav>
       </footer>
     </div>
-  )
+  );
 }
