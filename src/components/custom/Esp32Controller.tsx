@@ -55,9 +55,9 @@ const ESP32Controller: React.FC<ESP32ControllerProps> = ({ commands }) => {
 
   const calculateDuration = (command: CarCommands) => {
     if (command.type === 'forward' || command.type === 'backward') {
-      return command.distance * 10;
+      return command.distance * 500;
     } else {
-      return command.degrees * 10;
+      return command.degrees * 2.5;
     }
   };
 
