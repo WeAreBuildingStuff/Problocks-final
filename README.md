@@ -32,15 +32,18 @@ Problocks makes coding tangible and accessible for children, bridging the gap be
 1. Clone the repository:
 git clone https://github.com/WeAreBuildingStuff/Problocks-final.git
 
-Navigate to the project directory:
+2. Navigate to the project directory:
 cd Problocks-final
 
-Install dependencies:
+3. Install dependencies:
 npm install
 or
 yarn install
 
 4. Create a `.env` file in the root directory and add your Gemini API key:
 GOOGLE_GENAI_API_KEY=your_api_key_here
+
+5. Run the development server:
+npm run dev
 
 6. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
