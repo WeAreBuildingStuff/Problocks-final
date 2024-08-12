@@ -17,7 +17,7 @@ export default function Navbar() {
         <nav className='flex ml-auto mr-8 gap-4'>
           <a href="/" className="text-gray-500 font-medium hover:underline">Home</a>
           <a href="/courses" className="text-gray-500 font-medium hover:underline">Courses</a>
-          <a href="/challenges" className="text-gray-500 font-medium hover:underline">Challenges</a>
+          <a href="/challenge" className="text-gray-500 font-medium hover:underline">Challenges</a>
         </nav>
       </div>
     </header>
