@@ -51,8 +51,8 @@ const courseCategories = [
     icon: <PenMovementIcon className="h-6 w-6 text-white" />,
     courses: [
       { id: 1, title: 'Forwards and Backwards, Pen Down and Up', level: 1, icon: <PenMovementIcon className="h-24 w-24 text-green-500" /> },
-      { id: 2, title: 'Simple Turns (2 Max)', level: 2, icon: <SimpleTurnsIcon className="h-24 w-24 text-green-500" /> },
-      { id: 3, title: 'Complex Turns (4 Max)', level: 3, icon: <ComplexTurnsIcon className="h-24 w-24 text-green-500" /> },
+      { id: 2, title: 'Simple Turns', level: 2, icon: <SimpleTurnsIcon className="h-24 w-24 text-green-500" /> },
+      { id: 3, title: 'Complex Turns', level: 3, icon: <ComplexTurnsIcon className="h-24 w-24 text-green-500" /> },
       { id: 4, title: 'Drawing Simple Shapes', level: 4, icon: <SimpleShapesIcon className="h-24 w-24 text-green-500" /> },
       { id: 5, title: 'Creating Loops', level: 5, icon: <LoopingPatternsIcon className="h-24 w-24 text-green-500" /> },
       { id: 6, title: 'Complex Patterns', level: 6, icon: <ComplexPatternsIcon className="h-24 w-24 text-green-500" /> },
@@ -114,7 +114,7 @@ const Page = () => {
                         <CarouselItem key={courseIndex} className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
                           <div
                             className="p-1 hover:cursor-pointer"
-                            onClick={() => router.push(`courses/${category.route}/${courseIndex}`)}
+                            onClick={() => router.push(`courses/activities/${category.route}/${courseIndex}/0`)}
                           >
                             <CourseCard
                               title={course.title}
