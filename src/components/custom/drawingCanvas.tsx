@@ -127,26 +127,6 @@ const DrawingCanvas = <T extends GameType>({
     }
   };
 
-  const speak = (text: string) => {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
-    utterance.rate = 1;
-    const voices = speechSynthesis.getVoices();
-
-    const chosenVoice = voices
-      .filter(
-        (voice) =>
-          voice.name === "Microsoft Sonia Online (Natural) - English (United Kingdom)" ||
-          voice.name === 'Google UK English Female' ||
-          voice.name === 'Samantha'
-      );
-
-    utterance.voice = chosenVoice.length > 0 ? chosenVoice[0] : voices[0];
-    utterance.onstart = () => setIsLoading(true);
-    utterance.onend = () => setIsLoading(false);
-    speechSynthesis.speak(utterance);
-  };
-
   const canvasRef = useP5(sketch);
 
   return (
@@ -157,7 +137,6 @@ const DrawingCanvas = <T extends GameType>({
         onClose={() => setShowDialog(false)}
         message={resultMessage}
         generateFeedbackMessage={generateFeedbackMessage}
-        speak={speak}
         handleNext={handleNext}
       />
     </div>

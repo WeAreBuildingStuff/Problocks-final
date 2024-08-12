@@ -1,185 +1,151 @@
 "use client"
 import React from 'react';
-import PathHeader from '@/components/custom/PatherHeader';
+import Link from "next/link";
+import Image from "next/image";
+import { MonitorIcon, MicIcon, RobotIcon, CarIcon } from "@/components/custom/sub-components/Icons";
 import CourseCard from '@/components/custom/CourseCard';
-import { Separator } from '@/components/ui/separator';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
-  CarouselPrevious
+  CarouselPrevious,
 } from '@/components/ui/carousel';
 import { useRouter } from 'next/navigation';
+import {
+  ForwardAndBackwardIcon,
+  SimpleTurnsIcon,
+  AdvancedTurnsIcon,
+  LoopsAndCircuitsIcon,
+  ComplexRoutesIcon,
+  UltimateDrivingChallengeIcon,
+  PenMovementIcon,
+  ComplexTurnsIcon,
+  SimpleShapesIcon,
+  LoopingPatternsIcon,
+  ComplexPatternsIcon,
+  VeryComplexPatternsIcon,
+  SingleConnectionsIcon,
+  ThreeToFourConnectionsIcon,
+  ComplexShapesIcon,
+} from '@/components/custom/sub-components/coursesIcons';
 
-const carCourses = [
-  { id: 1, title: 'Zoom Zoom Forward!', level: 1, icon: '🚗' },
-  { id: 2, title: 'Beep Beep Backward!', level: 1, icon: '🔙' },
-  { id: 3, title: 'Spin Like a Top!', level: 2, icon: '🌀' },
-  { id: 4, title: 'Zig-Zag Adventure', level: 2, icon: '↩️' },
-  { id: 5, title: 'Loopy Laps', level: 3, icon: '🔁' },
-  { id: 6, title: 'Race to the Finish!', level: 3, icon: '🏁' }
+const courseCategories = [
+  {
+    title: 'Car Code Challenges',
+    description: 'Master the road by coding your car’s every move!',
+    icon: <ForwardAndBackwardIcon className="h-6 w-6 text-white" />,
+    courses: [
+      { id: 1, title: 'Forward and Backward Drives', level: 1, icon: <ForwardAndBackwardIcon className="h-24 w-24 text-green-500" /> },
+      { id: 2, title: 'Simple Turns', level: 2, icon: <SimpleTurnsIcon className="h-24 w-24 text-green-500" /> },
+      { id: 3, title: 'Advanced Turns', level: 2, icon: <AdvancedTurnsIcon className="h-24 w-24 text-green-500" /> },
+      { id: 4, title: 'Loops and Circuits', level: 3, icon: <LoopsAndCircuitsIcon className="h-24 w-24 text-green-500" /> },
+      { id: 5, title: 'Complex Routes', level: 3, icon: <ComplexRoutesIcon className="h-24 w-24 text-green-500" /> },
+      { id: 6, title: 'Ultimate Driving Challenge', level: 4, icon: <UltimateDrivingChallengeIcon className="h-24 w-24 text-green-500" /> }
+    ],
+    route: 'car'
+  },
+  {
+    title: 'Drawing Bot Adventures',
+    description: 'Guide your digital pen to create amazing drawings!',
+    icon: <PenMovementIcon className="h-6 w-6 text-white" />,
+    courses: [
+      { id: 1, title: 'Forwards and Backwards, Pen Down and Up', level: 1, icon: <PenMovementIcon className="h-24 w-24 text-green-500" /> },
+      { id: 2, title: 'Simple Turns', level: 2, icon: <SimpleTurnsIcon className="h-24 w-24 text-green-500" /> },
+      { id: 3, title: 'Complex Turns', level: 3, icon: <ComplexTurnsIcon className="h-24 w-24 text-green-500" /> },
+      { id: 4, title: 'Drawing Simple Shapes', level: 4, icon: <SimpleShapesIcon className="h-24 w-24 text-green-500" /> },
+      { id: 5, title: 'Creating Loops', level: 5, icon: <LoopingPatternsIcon className="h-24 w-24 text-green-500" /> },
+      { id: 6, title: 'Complex Patterns', level: 6, icon: <ComplexPatternsIcon className="h-24 w-24 text-green-500" /> },
+      { id: 7, title: 'Very Complex Patterns', level: 7, icon: <VeryComplexPatternsIcon className="h-24 w-24 text-green-500" /> }
+    ],
+    route: 'draw'
+  },
+  {
+    title: 'Tile Tastic Challenges',
+    description: 'Build and design with tile-based coding!',
+    icon: <SingleConnectionsIcon className="h-6 w-6 text-white" />,
+    courses: [
+      { id: 1, title: 'Single Connections', level: 1, icon: <SingleConnectionsIcon className="h-24 w-24 text-green-500" /> },
+      { id: 2, title: '3 to 4 Connections', level: 2, icon: <ThreeToFourConnectionsIcon className="h-24 w-24 text-green-500" /> },
+      { id: 3, title: 'Simple Shapes', level: 3, icon: <SimpleShapesIcon className="h-24 w-24 text-green-500" /> },
+      { id: 4, title: 'Complex Shapes', level: 4, icon: <ComplexShapesIcon className="h-24 w-24 text-green-500" /> },
+      { id: 5, title: 'Complex Patterns', level: 5, icon: <ComplexPatternsIcon className="h-24 w-24 text-green-500" /> }
+    ],
+    route: 'tile'
+  },
 ];
 
-const tileCourses = [
-  { id: 1, title: 'Connect the Dots', level: 1, icon: '🔗' },
-  { id: 2, title: 'Grid Maze Craze', level: 1, icon: '🧩' },
-  { id: 3, title: 'Pixel Art Party', level: 2, icon: '🎨' },
-  { id: 4, title: 'Shape Shifter', level: 2, icon: '🔶' },
-  { id: 5, title: 'Pattern Power', level: 3, icon: '🔄' },
-  { id: 6, title: 'Tile Treasure Hunt', level: 3, icon: '🗺️' }
-];
+const Page = () => {
+  const router = useRouter();
 
-const drawBotCourses = [
-  { id: 1, title: 'Doodle Bot Basics', level: 1, icon: '✏️' },
-  { id: 2, title: 'Squiggle and Swirl', level: 1, icon: '〰️' },
-  { id: 3, title: 'Shape Creator', level: 2, icon: '🔷' },
-  { id: 4, title: 'Artsy Loops', level: 2, icon: '🔄' },
-  { id: 5, title: 'Masterpiece Maker', level: 3, icon: '🖼️' },
-  { id: 6, title: 'Draw Bot Challenge', level: 3, icon: '🏆' }
-];
-
-const robotCarCourses = [
-  { id: 1, title: 'Robot Roll-Out', level: 1, icon: '🤖' },
-  { id: 2, title: 'Robo-Racer', level: 1, icon: '🏎️' },
-  { id: 3, title: 'Bot Obstacle Course', level: 2, icon: '🚧' },
-  { id: 4, title: 'Robo-Dance Party', level: 2, icon: '💃' },
-  { id: 5, title: 'Mission: Impossible Bot', level: 3, icon: '🕵️' },
-  { id: 6, title: 'Robot Car Olympics', level: 3, icon: '🥇' }
-];
-
-const Page: React.FC = () => {
-  const router = useRouter()
   return (
-    <div className='bg-white'>
-      <main className='mx-auto px-8 md:px-12 lg:px-24 py-8'>
-        <h1 className='text-3xl font-bold mb-2'>Code Adventures</h1>
-        <p className='text-gray-600 mb-8'>Explore exciting coding challenges!</p>
-
-        <div className='flex flex-col gap-16 mt-12'>
-          <div>
-            <PathHeader
-              title='Vroom Vroom Coding!'
-              description='Drive your digital car with blocks of code!'
-            />
-            <div className='bg-gray-100 py-6 rounded-xl mt-4 px-16'>
-              <Carousel className='w-full p-2'>
-                <CarouselContent className='-ml-1 gap-4'>
-                  {carCourses.map((course, index) => (
-                    <CarouselItem
-                      key={index}
-                      className='pl-1 basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5'
-                    >
-                      <div className='p-1 hover:cursor-pointer' onClick={() => router.push(`courses/car/${index}`)}>
-                        <CourseCard
-                          title={course.title}
-                          level={course.level}
-                          icon={course.icon}
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
+    <div className="flex flex-col min-h-[100dvh]">
+      <main className="flex-1">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-green-400 to-green-600">
+          <div className="container px-4 md:px-6">
+            <div className="text-center space-y-4">
+              <h1 className="text-4xl font-bold tracking-tighter text-white sm:text-5xl md:text-6xl">
+                Code Adventures Await!
+              </h1>
+              <p className="text-xl text-white md:text-2xl">
+                Explore exciting coding challenges and unleash your creativity!
+              </p>
             </div>
           </div>
+        </section>
 
-          <Separator />
-
-          <div>
-            <PathHeader
-              title='Tile Tastic Drawing'
-              description='Create amazing art on a grid with code blocks!'
-            />
-            <div className='bg-gray-100 py-6 rounded-lg mt-6 px-16'>
-              <Carousel className='w-full p-2'>
-                <CarouselContent className='-ml-1 gap-4'>
-                  {tileCourses.map((course, index) => (
-                    <CarouselItem
-                      key={index}
-                      className='pl-1 basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5'
-                    >
-                      <div className='p-1 hover:cursor-pointer' onClick={() => router.push(`courses/tile/${index}`)}>
-                        <CourseCard
-                          title={course.title}
-                          level={course.level}
-                          icon={course.icon}
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </div>
+        <section className="w-full py-12 md:py-24 lg:py-32">
+          <div className="container px-4 md:px-6 space-y-16">
+            {courseCategories.map((category, index) => (
+              <div key={index} className="space-y-8">
+                <div className="flex items-center space-x-4">
+                  <div className="bg-green-500 rounded-full w-12 h-12 flex items-center justify-center">
+                    {category.icon}
+                  </div>
+                  <div>
+                    <h2 className="text-3xl font-bold tracking-tighter">{category.title}</h2>
+                    <p className="text-muted-foreground">{category.description}</p>
+                  </div>
+                </div>
+                <div className="bg-gray-100 py-6 rounded-xl px-16">
+                  <Carousel className="w-full">
+                    <CarouselContent className="-ml-2 md:-ml-4">
+                      {category.courses.map((course, courseIndex) => (
+                        <CarouselItem key={courseIndex} className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+                          <div
+                            className="p-1 hover:cursor-pointer"
+                            onClick={() => router.push(`courses/activities/${category.route}/${courseIndex}/0`)}
+                          >
+                            <CourseCard
+                              title={course.title}
+                              level={course.level}
+                              icon={course.icon}
+                            />
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
+                </div>
+              </div>
+            ))}
           </div>
-
-          <Separator />
-
-          <div>
-            <PathHeader
-              title='Digital Draw Bot'
-              description='Command your virtual robot to create cool drawings!'
-            />
-            <div className='bg-gray-100 py-6 rounded-lg mt-6 px-16'>
-              <Carousel className='w-full p-2'>
-                <CarouselContent className='-ml-1 gap-4'>
-                  {drawBotCourses.map((course, index) => (
-                    <CarouselItem
-                      key={index}
-                      className='pl-1 basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5'
-                    >
-                      <div className='p-1 hover:cursor-pointer' onClick={() => router.push(`courses/draw/${index}`)}>
-                        <CourseCard
-                          title={course.title}
-                          level={course.level}
-                          icon={course.icon}
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </div>
-          </div>
-
-          <Separator />
-
-          <div>
-            <PathHeader
-              title='Real Robot Car Adventure'
-              description='Control a physical robot car with your awesome code!'
-            />
-            <div className='bg-gray-100 py-6 rounded-lg mt-6 px-16'>
-              <Carousel className='w-full p-2'>
-                <CarouselContent className='-ml-1 gap-4'>
-                  {robotCarCourses.map((course, index) => (
-                    <CarouselItem
-                      key={index}
-                      className='pl-1 basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5'
-                    >
-                      <div className='p-1 hover:cursor-pointer' onClick={() => router.push(`courses/bot/${index}`)}>
-                        <CourseCard
-                          title={course.title}
-                          level={course.level}
-                          icon={course.icon}
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </div>
-          </div>
-        </div>
+        </section>
       </main>
+
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+        <p className="text-xs text-muted-foreground">&copy; 2024 ProBlocks. All rights reserved.</p>
+        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+          <Link href="#" className="text-xs hover:underline underline-offset-4">
+            Terms of Service
+          </Link>
+          <Link href="#" className="text-xs hover:underline underline-offset-4">
+            Privacy
+          </Link>
+        </nav>
+      </footer>
     </div>
   );
 };
